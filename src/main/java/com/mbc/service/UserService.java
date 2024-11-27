@@ -11,6 +11,8 @@ public interface UserService {
 	
 	public void register(UserVO vo);
 	
+	public boolean isIdAvailable(String id);
+	
 	public int modify(UserVO vo);
 	
 	public int remove(Long uno);

@@ -10,6 +10,9 @@ public interface UserMapper {
 	// 회원가입(등록)
 	public void create(UserVO vo);
 	
+	// 아이디 중복 확인
+	public boolean existsById(String id);
+	
 	// 회원정보 수정
 	public int update(UserVO vo);
 	

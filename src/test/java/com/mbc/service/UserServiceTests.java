@@ -35,6 +35,16 @@ public class UserServiceTests {
 	}
 	
 	@Test
+	public void testIdAvailable() {
+		UserVO vo = new UserVO();
+		vo.setId("test01");
+		
+		boolean result = service.isIdAvailable(vo.getId());
+		
+		log.info("아이디 중복 : " + result);
+	}
+	
+	@Test
 	public void testModify() {
 		UserVO vo = service.get(8L);
 		

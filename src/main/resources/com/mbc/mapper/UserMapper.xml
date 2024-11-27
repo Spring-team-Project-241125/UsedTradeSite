@@ -14,6 +14,10 @@
 		values (seq_uno.nextval, #{id}, #{pwd}, sysdate)
 	</insert>
 	
+	<select id="existsById" resultType="boolean">
+		select count(*) from users where id=#{id}
+	</select>
+	
 	<update id="update">
 		update users set pwd=#{pwd} where uno=#{uno}
 	</update>

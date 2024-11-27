@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
     
     <footer class="d-flex bg-body-tertiary py-5">
         <div class="container">
@@ -15,7 +13,7 @@
                 </div>
                 <div class="col-lg-6">
                     <p class="fw-bold text-secondary mb-2">고객센터</p>
-                    <h4 class="">1670-2910</h4>
+                    <h4 class="">1600-6789</h4>
                     <p class="fs-sm">운영시간 9시 - 18시 (주말/공휴일 휴무, 점심시간 12시 - 13시)</p>
 
                 </div>

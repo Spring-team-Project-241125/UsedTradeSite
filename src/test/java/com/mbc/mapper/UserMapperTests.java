@@ -37,6 +37,16 @@ public class UserMapperTests {
 	}
 	
 	@Test
+	public void testIdAvailable() {
+		UserVO vo = new UserVO();
+		vo.setId("test10");
+
+		boolean result = mapper.existsById(vo.getId());
+		
+		log.info("exists id : " + result);
+	}
+	
+	@Test
 	public void testUpdate() {
 		UserVO vo = new UserVO();
 		vo.setUno(6L);

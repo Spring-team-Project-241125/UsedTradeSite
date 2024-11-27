@@ -28,6 +28,13 @@ public class UserServiceImpl implements UserService {
 		
 		mapper.create(vo);
 	}
+	
+	@Override
+	public boolean isIdAvailable(String id) {
+		log.info("id Available?");		
+		
+		return mapper.existsById(id);
+	}
 
 	@Override
 	public int modify(UserVO vo) {
