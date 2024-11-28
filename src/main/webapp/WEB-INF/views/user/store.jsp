@@ -30,15 +30,19 @@
                     type="button" role="tab" aria-controls="nav-reviews" aria-selected="false">리뷰정보</button>
             </div>
         </nav>
+        
         <div class="tab-content py-3" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-sale" role="tabpanel" aria-labelledby="nav-sale-tab"
                 tabindex="0">
                 <p class="text-center pt-5">판매 내역이 없습니다.</p>
+                <p class="text-center pt-5">판매 내역이 없습니다.</p>
 			</div>
             <div class="tab-pane fade" id="nav-purchase" role="tabpanel" aria-labelledby="nav-purchase-tab" tabindex="0">
             	<p class="text-center pt-5">구매 내역이 없습니다.</p>
+            	<p class="text-center pt-5">구매 내역이 없습니다.</p>
             </div>
             <div class="tab-pane fade" id="nav-reviews" role="tabpanel" aria-labelledby="nav-reviews-tab" tabindex="0">
+            	<p class="text-center pt-5">리뷰 정보가 없습니다.</p>
             	<p class="text-center pt-5">리뷰 정보가 없습니다.</p>    
             </div>
         </div>
