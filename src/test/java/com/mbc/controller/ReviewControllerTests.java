@@ -55,20 +55,23 @@ public class ReviewControllerTests {
 	
 	//리뷰 등록
 	@Test
-	public void testRegister()throws Exception {
-		ReviewVO vo = ReviewVO.builder()
-				.pno(5L)
-				.uno(5L)
-				.r_content("레지스터 테스트!!")
-				.r_img_path("")
-				.r_img_name("")
-				.r_img_o_name("")
-				.build();
-		
-		reviewService.register(vo);
-		
-		log.info("생성된 게시물의 번호 : " + vo.getPno());
-				
+	public void testRegister() throws Exception {
+	    // ReviewVO 객체 생성
+	    ReviewVO vo = new ReviewVO();
+	    
+	    // set 메서드를 통해 값 설정
+	    vo.setPno(5L);
+	    vo.setUno(5L);
+	    vo.setR_content("레지스터 테스트!!");
+	    vo.setR_img_path("");
+	    vo.setR_img_name("");
+	    vo.setR_img_o_name("");
+	    
+	    // 리뷰 등록 서비스 호출
+	    reviewService.register(vo);
+	    
+	    // 생성된 게시물의 번호 출력
+	    log.info("생성된 게시물의 번호 : " + vo.getPno());
 	}
 	
 	//리뷰 수정
@@ -83,7 +86,7 @@ public class ReviewControllerTests {
 				.andReturn()
 				.getModelAndView()
 				.getViewName();
-				;
+				log.info(resultPage);
 	}
 	
 	//리뷰 삭제

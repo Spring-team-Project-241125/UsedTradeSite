@@ -21,13 +21,12 @@ public class ReviewServiceImp implements ReviewService {
 	private final ReviewMapper mapper;
 	
 	
-	@Transactional
 	@Override
-	public int register(ReviewVO vo) {
+	public void register(ReviewVO vo) {
 		
 		log.info("register....." + vo);
 		
-		return mapper.insert(vo);
+		mapper.register(vo);
 	}
 
 	@Override
@@ -61,15 +60,5 @@ public class ReviewServiceImp implements ReviewService {
 		
 		return mapper.getListWithPaging(cri, uno);
 	}
-
-	@Override
-	public ReviewPageDTO getListPage(Criteria cri, Long uno) {
-
-		return new ReviewPageDTO( 
-				mapper.getCountByUno(uno),
-				mapper.getListWithPaging(cri, uno)
-				);
-	}
-	
 	
 }
