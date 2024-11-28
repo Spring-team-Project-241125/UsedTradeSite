@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.mbc.controller">
+	<logger name="org.zerock.controller">
 		<level value="info" />
 	</logger>
 	
@@ -37,5 +37,14 @@
 		<priority value="info" />
 		<appender-ref ref="console" />
 	</root>
+	
+	<!-- 로그 레벨을 warn으로 설정 변경 -->
+<!-- 	<logger name="jdbc.audit">
+		<level value="warn" />
+	</logger>
+	
+	<logger name="jdbc.connection">
+		<level value="warn" />
+	</logger> -->
 	
 </log4j:configuration>
