@@ -1,34 +1,24 @@
 package com.mbc.controller;
 
-import java.util.List;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mbc.domain.Criteria;
-import com.mbc.domain.ReviewPageDTO;
 import com.mbc.domain.ReviewVO;
 import com.mbc.service.ReviewService;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 @Controller
 @Log4j
-@AllArgsConstructor
-@RequestMapping("/review/")
+@RequestMapping("/review")
+@RequiredArgsConstructor
 public class ReviewController {
 
 	
@@ -45,18 +35,27 @@ public class ReviewController {
 		
 
 		@GetMapping("/register")
-		@PreAuthorize("isAuthenticated()")
 		public void register() {
 			
 		}
 		
 		// 리뷰 등록
 		@PostMapping("/register")
-		public String register(ReviewVO vo, RedirectAttributes rttr) {
+		public String register(@ModelAttribute ReviewVO vo, RedirectAttributes rttr) {
 			
-			log.info("register:========== " + vo);
-			service.register(vo);
 			
+			// 1~5 사이의 랜덤 정수 생성
+		       long uno = (int) (Math.random() * 5) + 1;
+		       vo.setUno(uno); // 하드코딩된 uno 설정
+		       
+		    // 1~5 사이의 랜덤 정수 생성
+		       long pno = (int) (Math.random() * 5) + 1;
+		       vo.setPno(pno); // 하드코딩된 uno 설정
+
+		       log.info("register:========== " + vo);
+		       
+		       service.register(vo);
+		       
 			rttr.addFlashAttribute("result", vo.getRno());
 			
 			return "redirect:/review/list";

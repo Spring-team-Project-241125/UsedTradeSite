@@ -33,19 +33,20 @@ public class ReviewMapperTests {
 	public void testCreate() {
 		
 		IntStream.rangeClosed(1, 5)
-			.forEach(i-> {
-				ReviewVO vo = ReviewVO.builder()
-						.pno(pnoArr[i%5])
-						.uno(pnoArr[i%5])
-						.r_content("리뷰 테스트" + i)
-						.r_img_path("")
-						.r_img_name("")
-						.r_img_o_name("")
-						.build();
+	    .forEach(i -> {
+	        // ReviewVO 객체를 생성한 후 setter 메서드를 사용하여 값을 설정
+	        ReviewVO vo = new ReviewVO();
+	        
+	        vo.setPno(pnoArr[i % 5]);  // pno 배열 값 설정
+	        vo.setUno(pnoArr[i % 5]);  // uno 배열 값 설정
+	        vo.setR_content("리뷰 테스트" + i);  // r_content 값 설정
+	        vo.setR_img_path("");  // r_img_path 값 설정
+	        vo.setR_img_name("");  // r_img_name 값 설정
+	        vo.setR_img_o_name("");  // r_img_o_name 값 설정
 						
 						
 				
-				mapper.insert(vo);
+				mapper.register(vo);
 				
 			});
 	}

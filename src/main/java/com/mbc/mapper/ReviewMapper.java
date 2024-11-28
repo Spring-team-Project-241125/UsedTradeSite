@@ -10,7 +10,7 @@ import com.mbc.domain.ReviewVO;
 public interface ReviewMapper {
 	
 	// 등록 작업
-	public int insert(ReviewVO vo);
+	public void register(ReviewVO vo);
 	
 	// 조회
 	public ReviewVO read(Long rno);
@@ -21,14 +21,11 @@ public interface ReviewMapper {
 	//수정
 	public int update (ReviewVO review);
 	
-	public List<ReviewVO> getList(Long uno);
-	
 	//페이징 처리
 	public List<ReviewVO> getListWithPaging(
 			@Param("cri") Criteria cri,
 			@Param("uno") Long uno
 			);
 	
-	public int getCountByUno(Long uno);
 
 }

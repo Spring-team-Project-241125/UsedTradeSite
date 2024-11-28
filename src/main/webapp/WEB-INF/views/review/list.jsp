@@ -5,6 +5,7 @@
   
 <%@ include file="../includes/header.jsp" %>
 
+
  <div class="container py-5">
         <h2 class="py-3">Table</h2>
     
@@ -18,43 +19,21 @@
                     <th scope="col">작성일</th>
                 </tr>
             </thead>
+            
             <tbody>
+            <!-- 모델에서 전달된 리뷰 목록을 반복하여 표시 -->
+            <c:forEach var="review" items="${list}">
                 <tr>
-                    <th scope="row">1</th>
-                    <td>(새것) 헤어팩 - XXX제품</td>
-                    <td>쿨거래맨</td>
-                    <td>쿨 거래 감사합니다~</td>
-                    <td>2025.01.01</td>
+                    <th scope="row">${review.rno}</th> <!-- 리뷰 번호 -->
+                    <td>${review.pno}</td> <!-- 상품명 -->
+                    <td>${review.uno}</td> <!-- 작성자 ID -->
+                    <td>${review.r_content}</td> <!-- 리뷰 내용 -->
+                    <td><fmt:formatDate value="${review.r_regdate}" pattern="yyyy.MM.dd" /></td> <!-- 작성일 -->
                 </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>(새것) 헤어팩 - XXX제품</td>
-                    <td>쿨거래맨</td>
-                    <td>쿨 거래 감사합니다~</td>
-                    <td>2025.01.01</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>(새것) 헤어팩 - XXX제품</td>
-                    <td>쿨거래맨</td>
-                    <td>쿨 거래 감사합니다~</td>
-                    <td>2025.01.01</td>
-                </tr>
-                <tr>
-                    <th scope="row">4</th>
-                    <td>(새것) 헤어팩 - XXX제품</td>
-                    <td>쿨거래맨</td>
-                    <td>쿨 거래 감사합니다~</td>
-                    <td>2025.01.01</td>
-                </tr>
-                <tr>
-                    <th scope="row">5</th>
-                    <td>(새것) 헤어팩 - XXX제품</td>
-                    <td>쿨거래맨</td>
-                    <td>쿨 거래 감사합니다~</td>
-                    <td>2025.01.01</td>
-                </tr>
-            </tbody>
+            </c:forEach>
+        </tbody>
+            
+           
         </table>
 
         <nav class="d-flex justify-content-center mt-5" aria-label="Page navigation">
