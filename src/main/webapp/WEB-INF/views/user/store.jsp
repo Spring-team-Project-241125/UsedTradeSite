@@ -11,10 +11,10 @@
         <h2 class="py-3">내 상점</h2>
 
         <div class="row">
-            <div class="col-lg-2">
-                <img src="/resources/img/unknown.jpg" alt="user" width="100px">
+            <div class="col-3">
+                <img src="/resources/img/unknown.jpg" alt="user" style="width:100%;">
             </div>
-            <div class="col-lg-10">
+            <div class="col-9">
                 <h3 class="pb-2">ID : ${ vo.id }</h3>
                 
 
@@ -33,11 +33,15 @@
         </nav>
         <div class="tab-content py-3" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-sale" role="tabpanel" aria-labelledby="nav-sale-tab"
-                tabindex="0">나의 판매내역 리스트</div>
+                tabindex="0">
+                <p class="text-center pt-5">판매 내역이 없습니다.</p>
+			</div>
             <div class="tab-pane fade" id="nav-purchase" role="tabpanel" aria-labelledby="nav-purchase-tab" tabindex="0">
-                나의 구매내역 리스트</div>
+            	<p class="text-center pt-5">구매 내역이 없습니다.</p>
+            </div>
             <div class="tab-pane fade" id="nav-reviews" role="tabpanel" aria-labelledby="nav-reviews-tab" tabindex="0">
-                나의 리뷰 리스트</div>
+            	<p class="text-center pt-5">리뷰 정보가 없습니다.</p>    
+            </div>
         </div>
     </div>
 
