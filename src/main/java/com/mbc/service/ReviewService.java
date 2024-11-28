@@ -8,7 +8,7 @@ import com.mbc.domain.ReviewVO;
 
 public interface ReviewService {
 	
-	public int register(ReviewVO vo);
+	public void register(ReviewVO vo);
 	
 	public ReviewVO get(Long rno);
 	
@@ -18,5 +18,4 @@ public interface ReviewService {
 	
 	public List<ReviewVO> getList(Criteria cri, Long uno);
 	
-	public ReviewPageDTO getListPage(Criteria cri, Long uno);
 }

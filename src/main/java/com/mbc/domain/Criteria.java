@@ -8,20 +8,20 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Criteria {
+
+	private int pagenum;  //페이지 번호
+	private int amount;   // 화면당 레코드 갯수
 	
-	private int pagenum;
-	private int amount;
-	
-	private String type;
-	private String keyword;
+	private String type;  //제목 or 내용 or 저자
+	private String keyword; //검색어   
 	
 	public Criteria() {
-		this(1,10);
+		this(1, 10);
 	}
-
-	public Criteria(int pagenum, int amount) {
-		this.pagenum = pagenum;
+	
+	public Criteria(int pageNum, int amount) {
 		this.amount = amount;
+		this.pagenum = pageNum;
 	}
 	
 	public String[] getTypeArr() {
@@ -29,23 +29,5 @@ public class Criteria {
 		return type == null? new String[] {}: type.split("");
 	}
    
-   private int pagenum;
-   private int amount;
-   
-   private String type;
-   private String keyword;
-   
-   public Criteria() {
-      this(1,10);
-   }
-
-   public Criteria(int pagenum, int amount) {
-      this.pagenum = pagenum;
-      this.amount = amount;
-   }
-   
-   public String[] getTypeArr() {
-      
-      return type == null? new String[] {}: type.split("");
-   }
 }
+

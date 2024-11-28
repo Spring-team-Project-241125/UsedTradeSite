@@ -5,13 +5,18 @@
   
 <mapper namespace="com.mbc.mapper.ReviewMapper">
 	
-	<insert id="insert">
+	<insert id="register">
 		insert into Reviews (rno, pno, uno, r_content, r_img_path, r_img_name, r_img_o_name)
-		values (seq_rno.nextval, #{pno}, #{uno}, #{r_content}, #{r_img_path}, #{r_img_name}, #{r_img_o_name})
+		values (seq_rno.nextval, #{pno}, #{uno}, #{r_content},
+		 	#{r_img_path, jdbcType=VARCHAR}, 
+            #{r_img_name, jdbcType=VARCHAR}, 
+            #{r_img_o_name, jdbcType=VARCHAR} )
 	</insert>
 
 	<select id="read" resultType="com.mbc.domain.ReviewVO">
-		select * from reviews where rno = #{rno}
+		 select * from reviews where rno = #{rno}
+		<!-- select r.rno, p.p_title, u.id, r_content, r_regdate
+		from reviews r, products p, users u; -->
 	</select>
 	
 	<delete id="delete">

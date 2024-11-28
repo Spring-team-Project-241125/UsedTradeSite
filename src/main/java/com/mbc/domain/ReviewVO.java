@@ -2,16 +2,14 @@ package com.mbc.domain;
 
 import java.sql.Date;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 public class ReviewVO {
 	private Long rno;
 	private Long pno;
