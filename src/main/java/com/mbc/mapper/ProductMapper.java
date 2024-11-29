@@ -21,4 +21,5 @@ public interface ProductMapper {
 	
 	public int getTotalCount(Criteria cri);
 	
+	public List<ProductVO> getProductsByUno(Long uno); // 판매자 ID를 기준으로 Product 조회
 }

@@ -22,4 +22,5 @@ public interface ReviewService {
 	public List<ReviewVO> getReviewListWithProductAndbuyerIdAndsellerId();
 	
 	public List<ReviewVO> getReviewListByUno(Long uno);
+
 }

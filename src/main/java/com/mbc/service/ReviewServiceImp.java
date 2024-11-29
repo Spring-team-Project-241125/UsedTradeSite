@@ -61,11 +61,11 @@ public class ReviewServiceImp implements ReviewService {
 		return mapper.getListWithPaging(cri, uno);
 	}
 	
-	
 	@Override
     public List<ReviewVO> getReviewListWithProductAndbuyerIdAndsellerId() {
         return mapper.getReviewListWithProductAndbuyerIdAndsellerId();
     }
+
 
 	@Override
 	public List<ReviewVO> getReviewListByUno(Long uno) {
