@@ -1,6 +1,10 @@
 package com.mbc.domain;
 
+
+
 import java.sql.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 import lombok.Getter;
@@ -22,7 +26,13 @@ public class ReviewVO {
 	
 	private Date r_regdate;
 	private Date r_updatedate;
+
 	
+	private String p_title;   // 상품명
+	private String sellerId;  // 작성자 ID (판매자 ID)
+	private String buyerId; // 구매자 ID
+
 	private String sellerId;
 	private String productTitle;
+
 }
