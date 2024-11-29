@@ -27,5 +27,6 @@ public interface ReviewMapper {
 			@Param("uno") Long uno
 			);
 	
+	public List<ReviewVO> getReviewListByUno(Long uno);
 
 }
