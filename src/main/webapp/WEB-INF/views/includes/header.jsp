@@ -56,18 +56,18 @@
                     </ul>
                     <div class="d-flex">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a class="nav-link" href="/user/store">내상점</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/logout">로그아웃</a>
-                            </li>
-<!--                             <li class="nav-item">
+                            </li> -->
+                            <li class="nav-item">
                                 <a class="nav-link" href="/user/register">회원가입</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/login">로그인</a>
-                            </li> -->
+                            </li>
                         </ul>
                     </div>
                 </div>
