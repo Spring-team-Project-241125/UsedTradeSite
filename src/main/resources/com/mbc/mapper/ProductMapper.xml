@@ -51,24 +51,28 @@
   
   <!-- prefixOverrides 거의 쓸 일 없음...separator 쓰자-->
 
-  <select id="getListWithPaging" resultType="com.mbc.domain.ProductVO">
+ <select id="getListWithPaging" resultType="com.mbc.domain.ProductVO">
   <![CDATA[
   select pno, uno, cate_no, p_title, p_content, p_price, p_quantity, p_regdate, p_updatedate
   from (
-      select 
-      rownum rn, pno, uno, cate_no, p_title, p_content, p_price, p_quantity, p_regdate, p_updatedate
-      from Products
+      select rownum rn, pno, uno, cate_no, p_title, p_content, p_price, p_quantity, p_regdate, p_updatedate
+      from (
+          select pno, uno, cate_no, p_title, p_content, p_price, p_quantity, p_regdate, p_updatedate
+          from Products
+          order by pno desc
+      )
       where 
   ]]>
-  	
+  
+  <!-- 검색 조건을 포함 -->
   <include refid="criteria"></include>
-  	
+
   <![CDATA[
-  	 rownum <= #{pagenum} * #{amount}
-  	 )
-  where rn > (#{pagenum} -1) * #{amount}
+      rownum <= #{pagenum} * #{amount}
+      )
+  where rn > (#{pagenum} - 1) * #{amount}
   ]]>
-  </select>
+</select>
 
   <insert id="insert">
   	insert into Products(pno, uno, cate_no, p_title, p_content, p_price, p_quantity)
@@ -113,15 +117,24 @@
   	pno > 0
   </select>
   
-  <select id="getProductsByUno" resultType="com.mbc.domain.ProductVO" parameterType="long">
-	   SELECT p.pno, p.uno, p.cate_no, p.p_title, p.p_content, p.p_price, p.p_quantity, 
-	          p.p_regdate, p.p_updatedate, 
-	          u.id AS sellerId
-	   FROM Products p
-	   LEFT JOIN Users u ON p.uno = u.uno
-	   WHERE p.uno = #{uno}
-	   ORDER BY p.p_regdate DESC
-  </select> 
+  <select id="getProductWithSellerId" resultType="com.mbc.domain.ProductVO" parameterType="long">
+    SELECT p.pno, p.uno, p.cate_no, p.p_title, p.p_content, p.p_price, p.p_quantity, p.p_regdate, p.p_updatedate, 
+           u.id AS sellerId
+    FROM Products p
+    LEFT JOIN Users u ON p.uno = u.uno
+    WHERE p.pno = #{pno}
+</select>
+
+<select id="getProductsByUno" resultType="com.mbc.domain.ProductVO" parameterType="long">
+    SELECT p.pno, p.uno, p.cate_no, p.p_title, p.p_content, p.p_price, p.p_quantity, 
+           p.p_regdate, p.p_updatedate, 
+           u.id AS sellerId
+    FROM Products p
+    LEFT JOIN Users u ON p.uno = u.uno
+    WHERE p.uno = #{uno}
+    ORDER BY p.p_regdate DESC
+</select>
+  
 
 </mapper>
 

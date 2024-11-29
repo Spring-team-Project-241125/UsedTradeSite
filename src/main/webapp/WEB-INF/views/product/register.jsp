@@ -18,9 +18,9 @@
         <input type="text" class="form-control" id="productTitle" name="p_title" placeholder="상품명을 입력해주세요">
     </div>  
     <div class="mb-3 col-lg-5"> 
-        <label for="price" class="form-label">가격</label>
-        <input type="text" class="form-control" id="price" name="p_price" placeholder="가격을 입력해주세요">
-    </div>
+    <label for="price" class="form-label">가격</label>
+    <input type="number" class="form-control" id="price" name="p_price" placeholder="가격을 입력해주세요" min="1000" step="1000">
+	</div>
     <div class="mb-3 col-lg-5">
         <label for="category" class="form-label">카테고리</label>
         <select class="form-select" id="category" name="cate_no">

@@ -22,8 +22,9 @@ public class ProductServiceImpl implements ProductService{
 	@Autowired
 	private final ProductMapper mapper;
 	
-//	 @Autowired
-//	    private UserMapper userMapper; // UserMapper를 통해 사용자 정보를 조회하는 Mapper
+//	@Autowired
+//	private ProductImageMapper ImageMapper;
+
 	
 	
 //	 public ProductVO getProductDetail(Long pno) {
@@ -89,10 +90,17 @@ public class ProductServiceImpl implements ProductService{
 		return mapper.getTotalCount(cri);
 	}
 	
+	 @Override
+	    public ProductVO getProductWithSellerId(Long pno) {
+	        // 제품 정보와 판매자 ID를 함께 조회
+	        return mapper.getProductWithSellerId(pno);
+	    }
+
 	@Override
 	public List<ProductVO> getProductsByUno(Long uno) {
 		// uno 를 기준으로 제품 정보를 조회
-		return mapper.getProductsByUno(uno);
+		 return mapper.getProductsByUno(uno);
 	}
+	
 
 }
