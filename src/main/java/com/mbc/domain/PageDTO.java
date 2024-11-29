@@ -13,6 +13,7 @@ public class PageDTO {
 	
 	private int total;
 	private Criteria cri;
+	private int totalPage;  // 추가된 필드: 총 페이지 수
 	
 	public PageDTO(Criteria cri, int total) {
 		
@@ -31,6 +32,9 @@ public class PageDTO {
 		this.prev =this.startPage > 1;
 		
 		this.next = this.endPage < realEnd;
+		
+		 // 총 페이지 계산
+        this.totalPage = realEnd;
 	}
 
 }

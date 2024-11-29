@@ -19,6 +19,8 @@ public interface ProductService {
 	
 	public int getTotal(Criteria cri);
 	
-	//public ProductVO getProductDetail(Long pno);
+	public ProductVO getProductWithSellerId(Long pno);
+	
+	public List<ProductVO> getProductsByUno(Long uno);
 
 }
