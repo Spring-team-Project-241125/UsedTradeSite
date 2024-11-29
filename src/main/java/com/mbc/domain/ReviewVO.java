@@ -22,4 +22,7 @@ public class ReviewVO {
 	
 	private Date r_regdate;
 	private Date r_updatedate;
+	
+	private String sellerId;
+	private String productTitle;
 }

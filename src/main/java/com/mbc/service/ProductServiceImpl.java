@@ -89,6 +89,10 @@ public class ProductServiceImpl implements ProductService{
 		return mapper.getTotalCount(cri);
 	}
 	
-	
+	@Override
+	public List<ProductVO> getProductsByUno(Long uno) {
+		// uno 를 기준으로 제품 정보를 조회
+		return mapper.getProductsByUno(uno);
+	}
 
 }

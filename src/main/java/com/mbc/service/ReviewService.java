@@ -18,4 +18,6 @@ public interface ReviewService {
 	
 	public List<ReviewVO> getList(Criteria cri, Long uno);
 	
+	public List<ReviewVO> getReviewListByUno(Long uno);
+	
 }

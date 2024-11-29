@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.mbc.domain.Criteria;
 import com.mbc.domain.UserVO;
+import com.mbc.service.ProductService;
+import com.mbc.service.ReviewService;
 import com.mbc.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,22 +28,24 @@ import lombok.extern.log4j.Log4j;
 @RequiredArgsConstructor
 public class UserController {
 	
-	private final UserService service;
+	private final UserService userService;
+	private final ProductService productService;
+	private final ReviewService reviewService;
 	
 	@GetMapping("/store")
 	public void myStroe(@RequestParam("uno") Long uno, Model model) {
 		log.info("my store...");
 		
-		model.addAttribute("vo", service.get(uno));
-		
-		
+		model.addAttribute("vo", userService.get(uno));
+		model.addAttribute("productList", productService.getProductsByUno(uno));
+		model.addAttribute("reviewList", reviewService.getReviewListByUno(uno));		
 	}
 	
 	@GetMapping({"/detail", "/modify"})
 	public void detail(@RequestParam("uno") Long uno, Model model) {
 		log.info("get or modify...");
 		
-		model.addAttribute("vo", service.get(uno));
+		model.addAttribute("vo", userService.get(uno));
 	}
 	
 	@GetMapping("/register")
@@ -50,15 +55,15 @@ public class UserController {
 	 public String register(UserVO vo) {
 		log.info("register : " + vo);
 		
-		service.register(vo);
-		log.info("register after : " + vo);
-		
+		userService.register(vo);
+		log.info("register after : " + vo);		
+	
 		return "redirect:/login";
 	}
 	
 	@GetMapping(value = "/check-id", produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<Map<String, Object>> checkId(@RequestParam("id") String id) {
-		boolean isAvailable = service.isIdAvailable(id);
+		boolean isAvailable = userService.isIdAvailable(id);
 		
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("available", isAvailable);
@@ -68,25 +73,21 @@ public class UserController {
 	}
 	
 	@PostMapping("/modify")
-	public String modify(UserVO vo, RedirectAttributes rttr) {
+	public String modify(UserVO vo) {
 		
 		log.info("modify : " + vo);
 		
-		if(service.modify(vo) == 1) {
-			rttr.addFlashAttribute("result", "success");
-		}
+		userService.modify(vo);
 		
 		return "redirect:/user/detail?uno=" + vo.getUno();
 	}
 	
 	@PostMapping("/remove")
-	public String remove(@RequestParam("uno") Long uno, RedirectAttributes rttr) {
+	public String remove(@RequestParam("uno") Long uno) {
 		
 		log.info("remove..." + uno);
 		
-		if(service.remove(uno) == 1) {
-			rttr.addAttribute("result", "success");
-		}
+		userService.remove(uno);
 
 		return "redirect:/login";
 	}

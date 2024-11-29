@@ -21,6 +21,6 @@ public class ProductVO {
 	private Date p_regdate;
 	private Date p_updatedate;
 	
-	// private String sellerId; // 판매자 ID 추가
+	private String sellerId; // 판매자 ID 추가
 
 }
