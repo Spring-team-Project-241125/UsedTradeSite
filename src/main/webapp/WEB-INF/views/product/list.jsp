@@ -164,14 +164,40 @@
 </div>
 <!-- 삭제 완료 모달 끝 -->
 
+<!-- 수정 완료 모달 시작 -->
+<div class="modal fade" id="modifySuccessModal" tabindex="-1" aria-labelledby="modifySuccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modifySuccessModalLabel">수정 완료</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                게시글이 성공적으로 수정되었습니다.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 수정 완료 모달 끝 -->
 
 <%@include file="../includes/footer.jsp" %>
 
 <script>
     $(document).ready(function(){
-        // 삭제 후 'result' 값이 'success'일 때 삭제 완료 모달 띄우기
-        <c:if test="${not empty result && result == 'success'}">
+        // result 값을 JavaScript 변수로 전달
+        var result = "${result}";
+
+        // 삭제 후 result 값이 'removesuccess'일 때 삭제 완료 모달 띄우기
+        if(result === 'removesuccess'){
             $('#deleteSuccessModal').modal('show');
-        </c:if>
+        }
+
+        // 수정 후 result 값이 'modifysuccess'일 때 수정 완료 모달 띄우기
+        if(result === 'modifysuccess'){
+            $('#modifySuccessModal').modal('show');
+        }
     });
 </script>
