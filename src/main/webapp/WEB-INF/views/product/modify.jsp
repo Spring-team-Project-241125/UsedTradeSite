@@ -22,10 +22,11 @@
                 <input type="text" id="title" name="p_title" class="form-control" value="${product.p_title}" required />
 
                 <label for="price" class="mt-3">상품 가격</label>
-                <input type="number" id="price" name="p_price" class="form-control" value="${product.p_price}" required />
+                <input type="number" id="price" name="p_price" class="form-control" value="${product.p_price}" required 
+                    placeholder="가격을 입력해주세요" min="1000" step="1000" oninput="formatPrice(this)" />
 
                 <label for="content" class="mt-3">상품 설명</label>
-                <textarea id="content" name="p_content" class="form-control" rows="5" required>${product.p_content}</textarea>
+                <textarea id="content" name="p_content" class="form-control" rows="5" required >${product.p_content}</textarea>
 
                 <div class="text-end mt-3">
                     <button type="submit" class="btn btn-primary">수정 완료</button>
