@@ -18,13 +18,13 @@
                 <h4 class="text-end pb-3"> <fmt:formatNumber value="${product.p_price}" pattern="#,###" />
     원</h4>
     
-   <%--  <p>판매자: <c:out value="${product.sellerId}" /></p> --%>
+     <p>판매자: <c:out value="${product.sellerId}" /></p> 
     
                 <div class="text-end">
                     <button type="button" class="btn btn-warning mt-3 ">장바구니</button>
                     <button type="button" class="btn btn-danger mt-3 ">구매하기</button>
                     
-                    <a href="/product/modify?pno=${product.pno}" class="btn btn-primary mt-3">수정하기</a>
+                    <a href="/product/modify?pno=${product.pno}" class="btn btn-primary mt-3">   수정하기   </a>
                     <button type="button" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#deleteModal">삭제하기</button>
                 </div>        
                 
