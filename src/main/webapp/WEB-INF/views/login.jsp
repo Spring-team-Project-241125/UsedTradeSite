@@ -24,6 +24,7 @@
                 <button type="submit" class="btn btn-primary mt-3" id="loginBtn">로그인</button>
             </div>  
         </form>
+
     </div>
 
 <%@include file="includes/footer.jsp" %>
@@ -40,6 +41,6 @@
 			}else {
 				$('form').submit();
 			}
-		});
+		});		
 	});
 </script>

@@ -28,12 +28,7 @@
                 <label for="userPwd" class="form-label">비밀번호</label>
                 <input type="password" class="form-control" id="userPwd"
                  name="pwd" value="${ vo.pwd }">
-            </div>
-            <div class="mb-3 col-lg-5"> 
-                <label for="phone" class="form-label">전화번호</label>
-                <input type="text" class="form-control" id="phone"
-                 name="phone" value="${ vo.phone }">
-            </div>          
+            </div>            
 
             <button type="submit" data-oper="modify" class="btn btn-primary mt-3">회원정보 수정</button>
             <button type="submit" data-oper="remove" class="btn btn-danger mt-3">회원 탈퇴</button>
@@ -55,10 +50,9 @@
 			if(operation == 'modify'){
 				alert("회원정보가 수정되었습니다.");
 			}else if(operation == 'remove'){
-				if(confirm("정말로 회원탈퇴 하시겠습니까?")){	
-					alert("회원탈퇴가 완료되었습니다.\n다음에 이용해주세요~");
+				if(confirm("정말로 회원탈퇴 하시겠습니까?")){					
 					formObj.attr('action', '/user/remove');
-				}				
+				}
 			}
 			
 			formObj.submit();

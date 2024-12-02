@@ -24,14 +24,9 @@
                 <input type="password" class="form-control" id="userPwd"
                  name="pwd" value="${ vo.pwd }" readonly>
             </div>
-            <div class="mb-3 col-lg-5"> 
-                <label for="phone" class="form-label">전화번호</label>
-                <input type="text" class="form-control" id="phone"
-                 name="phone" value="${ vo.phone }" readonly>
-            </div>
 
             <button type="button" class="btn btn-primary mt-3" 
-            onclick="location.href='/user/modify?uno=${vo.uno}'">회원정보 수정하기</button>
+            onclick="location.href='/user/modify?uno=${vo.uno}'">회원정보 수정</button>
         </form>
     </div>
 

@@ -18,51 +18,25 @@
             </div> 
             <div class="mb-3 col-lg-5">   
                 <label for="userId" class="form-label">아이디</label>
-                <input type="text" class="form-control" id="userId" name="id" placeholder="아이디를 입력해주세요">
+                <input type="text" class="form-control" id="id" name="id" placeholder="아이디를 입력해주세요">
                 <button type="button" class="btn btn-secondary mt-2" id="checkIdBtn">중복 확인</button>
             </div>  
             <div class="mb-3 col-lg-5"> 
                 <label for="userPwd" class="form-label">비밀번호</label>
-                <input type="password" class="form-control" id="userPwd" name="pwd" placeholder="비밀번호를 입력해주세요">
-            </div>
-            <div class="mb-3 col-lg-5"> 
-                <label for="phone" class="form-label">전화번호</label>
-                <input type="text" class="form-control" id="phone" name="phone" placeholder="전화번호를 입력해주세요">
+                <input type="password" class="form-control" id="pwd" name="pwd" placeholder="비밀번호를 입력해주세요">
             </div>
 
-            <button type="submit" class="btn btn-primary mt-3" 
-            	data-bs-toggle="modal" data-bs-target="#registerModal">회원가입</button>
+            <button type="submit" class="btn btn-primary mt-3">회원가입</button>
         </form>
 
     </div>
-    
-    <!-- modal start -->
-	<div id="registerModal" class="modal fade" tabindex="-1" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title">회원 가입</h5>
-	      </div>
-	      <div class="modal-body">
-	        <p>회원 등록이 완료되었습니다.<br>로그인 후 이용해주세요~</p>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">확인</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	<!-- modal end -->
-    
 
 <%@include file="../includes/footer.jsp" %>
 
 <script>
 	$(function(){
-		const checkIdModel = $('#chekcIdModal')
-		
 		$('#checkIdBtn').click(function(){
-			const id = $('#userId').val();
+			const id = $('#id').val();
 			
 			if(!id){
 				alert("아이디를 입력해주세요.");
@@ -80,13 +54,6 @@
 					console.log("ajax error");
 				}
 			});
-		});
-		
-		$('button[type="submit"]').click(function(e){
-			e.preventDefault();
-			
-			alert("회원에 가입되었습니다.\n로그인후 이용해주세요~");
-			$('form').submit();
 		});
 	});
 </script>
