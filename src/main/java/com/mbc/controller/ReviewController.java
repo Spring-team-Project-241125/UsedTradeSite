@@ -37,12 +37,13 @@ public class ReviewController {
 		 log.info("list: " + cri);
 
 		// 서비스에서 전체 리뷰 목록을 가져옴
-		List<ReviewVO> reviews = service.getReviewListWithProductAndbuyerIdAndsellerId();
+		List<ReviewVO> reviews = service.getReviewListWithProductAndbuyerIdAndsellerId(cri);
 				        
 		
 		// 모델에 데이터 추가
 		model.addAttribute("list", reviews);
 		
+		model.addAttribute("pageMaker", new PageDTO(cri, 123));
 		
 		}
 		

@@ -16,11 +16,9 @@ public interface ReviewService {
 	
 	public int remove(Long rno);
 	
-	public List<ReviewVO> getList(Criteria cri, Long uno);
 
 	
-	public List<ReviewVO> getReviewListWithProductAndbuyerIdAndsellerId();
+	public List<ReviewVO> getReviewListWithProductAndbuyerIdAndsellerId(Criteria cri);
 	
 	public List<ReviewVO> getReviewListByUno(Long uno);
-
 }

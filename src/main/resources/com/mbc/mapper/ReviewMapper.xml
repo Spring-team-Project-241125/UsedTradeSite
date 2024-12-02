@@ -34,42 +34,27 @@
 		where rno = #{rno}
 	</update>
 	
-	<select id="getListWithPaging" resultType="com.mbc.domain.ReviewVO">
-		select * from reviews
-	    order by rno desc
-	</select>
-	
-	<select id="getReviewListByUno" resultType="com.mbc.domain.ReviewVO">
-	   SELECT 
-	       r.rno, 
-	       r.pno, 
-	       r.uno, 
-	       r.r_content, 
-	       r.r_img_path, 
-	       r.r_img_name, 
-	       r.r_img_o_name, 
-	       r.r_regdate, 
-	       r.r_updatedate, 
-	       p.p_title AS productTitle,   -- 상품명
-	       u.id AS sellerId             -- 판매자 ID
-	   FROM Reviews r
-	   LEFT JOIN Products p ON r.pno = p.pno
-	   LEFT JOIN Users u ON r.uno = u.uno  -- 판매자 정보 가져오기
-	   WHERE r.uno = #{uno}
-	   ORDER BY r.r_regdate DESC
-	</select>
-	
-		 
-		 
+
 	<!-- 리뷰 목록을 조회하고, 상품명(p_title)과 작성자 ID(sellerId)도 포함하는 쿼리 -->
 <select id="getReviewListWithProductAndbuyerIdAndsellerId" resultType="com.mbc.domain.ReviewVO">
-   	SELECT r.rno, r.pno, r.uno, r.r_content, r.r_regdate, 
-       	p.p_title, u.id AS sellerId, buyer.id AS buyerId
-	FROM Reviews r
-	JOIN Products p ON r.pno = p.pno
-	LEFT JOIN Users u ON p.uno = u.uno
-	LEFT JOIN Users buyer ON r.uno = buyer.uno
-
+  <![CDATA[
+  select r.rno, r.pno, r.uno, r.r_content, r.r_regdate,
+         p.p_title, -- 상품 제목
+         buyer.id AS buyerId, -- 구매자 ID
+         u.id AS sellerId -- 판매자 ID
+  from (
+        select rno, pno, uno, r_content, r_regdate, rownum rn
+        from (
+            select r.rno, r.pno, r.uno, r.r_content, r.r_regdate
+            from Reviews r
+            order by r.rno desc  -- 정렬이 먼저 이루어짐
+        )
+    ) r
+  left join Products p ON r.pno = p.pno -- 상품 정보 조인
+  left join Users u ON p.uno = u.uno -- 판매자 정보 조인
+  left join Users buyer ON r.uno = buyer.uno -- 구매자 정보 조인
+  where r.rn between (#{pagenum} - 1) * #{amount} + 1 and #{pagenum} * #{amount}
+  ]]>
 </select>
 		  
 <select id="getReviewListByUno" resultType="com.mbc.domain.ReviewVO">
@@ -95,4 +80,3 @@
 		 
 		 
 </mapper>
-

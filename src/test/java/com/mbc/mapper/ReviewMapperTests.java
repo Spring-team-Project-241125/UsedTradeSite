@@ -84,12 +84,19 @@ public class ReviewMapperTests {
 		mapper.update(vo);
 	}
 	
+	
+	
 	@Test
-	public void testList() {
-		Criteria cri = new Criteria();
-		
-		mapper.getListWithPaging(cri, 2L)
-		.forEach(uno-> log.info(uno));
-		
+	public void testPaging() {
+	    // Criteria 객체 생성 후 페이지 번호와 항목 수 설정
+	    Criteria cri = new Criteria();
+	    cri.setPagenum(1);  // 두 번째 페이지
+	    cri.setAmount(10);  // 페이지당 10개 항목
+	    
+	    // Mapper에서 getListWithPaging 메서드 호출
+	    List<ReviewVO> list = mapper.getReviewListWithProductAndbuyerIdAndsellerId(cri);
+
+	    // 결과 출력
+	    list.forEach(review -> log.info(review));  // 리뷰 번호 출력
 	}
 }

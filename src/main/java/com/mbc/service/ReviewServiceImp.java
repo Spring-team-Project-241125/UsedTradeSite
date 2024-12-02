@@ -53,19 +53,12 @@ public class ReviewServiceImp implements ReviewService {
 		return mapper.delete(rno);
 	}
 	
-	@Override
-	public List<ReviewVO> getList(Criteria cri, Long uno) {
-
-		log.info("get Reply List of a Board " + cri + " , " + uno);
-		
-		return mapper.getListWithPaging(cri, uno);
-	}
+	
 	
 	@Override
-    public List<ReviewVO> getReviewListWithProductAndbuyerIdAndsellerId() {
-        return mapper.getReviewListWithProductAndbuyerIdAndsellerId();
+    public List<ReviewVO> getReviewListWithProductAndbuyerIdAndsellerId(Criteria cri) {
+        return mapper.getReviewListWithProductAndbuyerIdAndsellerId(cri);
     }
-
 
 	@Override
 	public List<ReviewVO> getReviewListByUno(Long uno) {
