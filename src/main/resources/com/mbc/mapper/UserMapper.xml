@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mbc.mapper.UserMapper">
+
+	<select id="read" resultType="com.mbc.domain.UserVO">
+		select uno, id, pwd, u_img_path, u_img_name, u_img_o_name, u_regdate
+    	from users where uno=#{uno}
+	</select>
+	
+	<insert id="create">
+		insert into users (uno, id, pwd, u_regdate)
+		values (seq_uno.nextval, #{id}, #{pwd}, sysdate)
+	</insert>
+	
+	<select id="existsById" resultType="boolean">
+		select count(*) from users where id=#{id}
+	</select>
+	
+	<update id="update">
+		update users set pwd=#{pwd} where uno=#{uno}
+	</update>
+	
+	<delete id="delete">
+		delete from users where uno=#{uno}
+	</delete>
+</mapper>
