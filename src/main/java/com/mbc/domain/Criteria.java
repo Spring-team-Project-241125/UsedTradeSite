@@ -16,7 +16,7 @@ public class Criteria {
 	private String keyword; //검색어   
 	
 	public Criteria() {
-		this(1, 10);
+		this(1, 12);
 	}
 	
 	public Criteria(int pageNum, int amount) {
@@ -24,19 +24,10 @@ public class Criteria {
 		this.pagenum = pageNum;
 	}
 	
-	/*
-	 * T : 제목
-	 * C : 내용
-	 * W : 저자
-	 * 
-	 * TCW(제,내,저), TW(제,저)  
-	 * 
-	 *  type >> TCW  -> T|C|W -> 하나문자열을 개별 문자열로 분할
-	 */
-	
-	
-	//type 검색 조건을 분리! TCW -> T | C | W 개별적으로 분리
 	public String[] getTypeArr() {
-		return type==null? new String[] {} : type.split("");
+		
+		return type == null? new String[] {}: type.split("");
 	}
+   
 }
+
