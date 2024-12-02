@@ -5,13 +5,13 @@
 <mapper namespace="com.mbc.mapper.UserMapper">
 
 	<select id="read" resultType="com.mbc.domain.UserVO">
-		select uno, id, pwd, u_img_path, u_img_name, u_img_o_name, u_regdate
+		select uno, id, pwd, phone, u_img_path, u_img_name, u_img_o_name, u_regdate
     	from users where uno=#{uno}
 	</select>
 	
 	<insert id="create">
-		insert into users (uno, id, pwd, u_regdate)
-		values (seq_uno.nextval, #{id}, #{pwd}, sysdate)
+		insert into users (uno, id, pwd, phone, u_regdate)
+		values (seq_uno.nextval, #{id}, #{pwd}, #{phone}, sysdate)
 	</insert>
 	
 	<select id="existsById" resultType="boolean">
@@ -19,7 +19,7 @@
 	</select>
 	
 	<update id="update">
-		update users set pwd=#{pwd} where uno=#{uno}
+		update users set pwd=#{pwd}, phone=#{phone} where uno=#{uno}
 	</update>
 	
 	<delete id="delete">

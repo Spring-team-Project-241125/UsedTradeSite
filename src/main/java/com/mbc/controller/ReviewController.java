@@ -1,19 +1,26 @@
 package com.mbc.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mbc.domain.Criteria;
+import com.mbc.domain.PageDTO;
 import com.mbc.domain.ReviewVO;
 import com.mbc.service.ReviewService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
+
 
 @Controller
 @Log4j
@@ -26,12 +33,20 @@ public class ReviewController {
 		
 		//리뷰 리스트
 		@GetMapping("/list")
-		public void list(Model model, Criteria cri, Long uno) {
-			log.info("list");
-			
-			model.addAttribute("list", service.getList(cri, uno));
-			
+		public void list(Criteria cri ,Model model) {
+		 log.info("list: " + cri);
+
+		// 서비스에서 전체 리뷰 목록을 가져옴
+		List<ReviewVO> reviews = service.getReviewListWithProductAndbuyerIdAndsellerId();
+				        
+		
+		// 모델에 데이터 추가
+		model.addAttribute("list", reviews);
+		
+		
 		}
+		
+		
 		
 
 		@GetMapping("/register")
@@ -56,6 +71,7 @@ public class ReviewController {
 		       
 		       service.register(vo);
 		       
+		       rttr.addFlashAttribute("message", "등록되었습니다.");
 			rttr.addFlashAttribute("result", vo.getRno());
 			
 			return "redirect:/review/list";
@@ -73,6 +89,9 @@ public class ReviewController {
 		}
 
 		
+		
+		
+		
 		//리뷰 삭제
 		@PostMapping("/remove")
 		public String remove(Long rno, Criteria cri, RedirectAttributes rttr) {
@@ -85,10 +104,11 @@ public class ReviewController {
 		}
 		
 		
-		@GetMapping("/get")
+		@GetMapping({"/get", "/modify"})
 		public void get(Long rno, Criteria cri, Model model) {
 			
+			
 			log.info("/get");
-			model.addAttribute("rno", service.get(rno));
+			model.addAttribute("review", service.get(rno));
 		}
 }
