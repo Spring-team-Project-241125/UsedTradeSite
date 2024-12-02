@@ -19,8 +19,9 @@ public interface ProductService {
 	
 	public int getTotal(Criteria cri);
 	
-	public ProductVO getProductWithSellerId(Long pno);
+	//public ProductVO getProductDetail(Long pno);
 	
-	public List<ProductVO> getProductsByUno(Long uno);
+	public List<ProductVO> getProductsByUno(Long uno); // 판매자 ID를 기준으로 Product 조회
+
 
 }

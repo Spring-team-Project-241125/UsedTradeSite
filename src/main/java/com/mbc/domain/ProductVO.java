@@ -1,7 +1,6 @@
 package com.mbc.domain;
 
 import java.util.Date;
-import java.util.List;
 
 import lombok.Data;
 import lombok.Getter;
@@ -23,5 +22,5 @@ public class ProductVO {
 	private Date p_updatedate;
 	
 	private String sellerId; // 판매자 ID 추가
-	
+
 }

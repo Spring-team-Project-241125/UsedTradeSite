@@ -38,21 +38,6 @@ public class ProductServiceTests {
 	}
 	
 	@Test
-	public void insertDummyProducts() {
-        for (int i = 0; i < 100; i++) {
-            ProductVO product = new ProductVO();
-            product.setUno((long) (i % 5 + 1));  // uno 값은 1부터 5 사이
-            product.setCate_no((long) (i % 5 + 1));  // cate_no 값은 1부터 5 사이
-            product.setP_title("Product " + (i + 1));
-            product.setP_content("This is content for product " + (i + 1));
-            product.setP_price((long)1000 + (i % 10) * 100);
-            product.setP_quantity((long)50 + (i % 10) * 10);
-
-            service.register(product);  // 매퍼를 통해 데이터 삽입
-        }
-    }
-	
-	@Test
 	public void testGetList() {
 		 
 		//service.getList().forEach(Product -> log.info(Product));

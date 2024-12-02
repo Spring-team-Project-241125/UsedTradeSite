@@ -1,6 +1,8 @@
 package com.mbc.controller;
 
+import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +45,8 @@ public class ProductController {
 		
 		log.info("list: " + cri);
 		model.addAttribute("productList", service.getList(cri));
+	//	model.addAttribute("pageMaker", new PageDTO(cri, 400));
+	//	log.info("cri: " + new PageDTO(cri,400));
 		
 		int total = service.getTotal(cri);
 		
@@ -82,13 +86,13 @@ public class ProductController {
 		
 		log.info("/get or modify");
 		
-		ProductVO product = service.getProductWithSellerId(pno);
+		ProductVO Product = service.get(pno);
 		
 		// 판매자 정보 조회 (상품의 uno를 기준으로 사용자 ID 조회)
       //  String sellerId = userService.getUserIdByUno(product.getUno());
       //  product.setSellerId(sellerId);  // 조회한 판매자 ID를 ProductVO에 세팅
 		
-		model.addAttribute("product", product);
+		model.addAttribute("product", Product);
 	}
 	
 	@PostMapping("/remove")

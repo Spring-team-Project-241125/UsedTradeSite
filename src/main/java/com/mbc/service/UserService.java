@@ -16,5 +16,4 @@ public interface UserService {
 	public int modify(UserVO vo);
 	
 	public int remove(Long uno);
-	
 }
