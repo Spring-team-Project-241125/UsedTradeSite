@@ -62,12 +62,6 @@ public class ReviewServiceImp implements ReviewService {
 	}
 	
 	@Override
-    public List<ReviewVO> getReviewListWithProductAndbuyerIdAndsellerId() {
-        return mapper.getReviewListWithProductAndbuyerIdAndsellerId();
-    }
-
-
-	@Override
 	public List<ReviewVO> getReviewListByUno(Long uno) {
 		return mapper.getReviewListByUno(uno);
 	}
