@@ -6,11 +6,39 @@
 
 <%@include file="../includes/header.jsp" %>
 
+<style>
+    .pagination {
+        margin: 0;
+    }
+
+    .pagination .page-item {
+        margin: 0 5px; /* 각 페이지 번호 사이에 간격을 추가 */
+    }
+
+    .pagination .page-link {
+        border-radius: 5px; /* 버튼에 둥근 테두리 추가 */
+        padding: 10px 15px; /* 버튼 크기 조정 */
+    }
+
+    .pagination .active .page-link {
+        background-color: #007bff; /* 활성화된 페이지 번호 색상 */
+        color: white; /* 텍스트 색상 */
+    }
+
+    .pagination .page-link:hover {
+        background-color: #f8f9fa; /* 호버 시 배경 색상 변경 */
+    }
+
+    .pagination .page-item:first-child .page-link,
+    .pagination .page-item:last-child .page-link {
+        padding: 10px 15px; /* 첫 번째와 마지막 페이지 버튼에 패딩 */
+    }
+</style>
 
     <div class="container py-5">
         <h2 class="py-3">상품 목록</h2>
         <div class="d-flex justify-content-end">
-        	 <a href="register" class="btn btn-primary mb-3">상품등록</a>
+        	 <a href="/product/register" class="btn btn-primary mb-3">상품등록</a>
 		</div>
         <div class="container">
     <div class="row">
@@ -55,9 +83,8 @@
                              				<c:out value="${pageMaker.cri.type eq 'TWC'?'selected':'' }"/>>제목 or 내용 or 작성자</option>
                              		</select>
                              		<input type='text' name='keyword' 
-                             		value='<c:out value="${pageMaker.cri.type eq 'T'?'selected':'' }"/>'/>
-                             		<input type='hidden' name='pagenum' 
-                             		value='<c:out value="${pageMaker.cri.pagenum }"/>'/>
+                             		value='<c:out value="${pageMaker.cri.keyword }"/>'/>
+                             		 <input type='hidden' name='pagenum' value='1'/>
                              		<input type='hidden' name='amount' 
                              		value='<c:out value="${pageMaker.cri.amount }"/>'/>
                              		<button class='btn btn-default'>Search</button>
@@ -68,30 +95,46 @@
 
 
 <!-- 페이징처리 시작 -->
-        <nav class="d-flex justify-content-center mt-5" aria-label="Page navigation">
-            <ul class="pagination">
+<nav class="d-flex justify-content-center mt-5" aria-label="Page navigation">
+    <ul class="pagination pagination-sm">
     
-    <c:if test="${pageMaker.prev }">
-    	<li class="paginate_button previous">
-    	<a href="${pageMaker.startPage-1 }">Previous</a>
-    	</li>
-    </c:if>
     
-    <c:forEach var="num" begin="${pageMaker.startPage }"
-    end="${pageMaker.endPage }">
-    <li class="paginate_button ${pageMaker.cri.pagenum == num ? "active":""} ">
-    <a href="${num} ">${num }</a>
-    </li>
-    </c:forEach>
-    
-    <c:if test="${pageMaker.next }">
-    	<li class="paginate_button next">
-    	<a href="${pageMaker.endPage+1 }">Next</a>
-    	</li>
-    </c:if>
+        <!-- 이전 페이지 및 처음페이지 -->
+        <c:if test="${pageMaker.prev}">
+        
+        <li class="paginate_button first">
+                <a href="/product/list?pagenum=1&amount=${pageMaker.cri.amount}&type=${pageMaker.cri.type}&keyword=${pageMaker.cri.keyword}" class="page-link">First</a>
+            </li>
+        
+        
+            <li class="paginate_button previous">
+                <a href="/product/list?pagenum=${pageMaker.startPage - 1}&amount=${pageMaker.cri.amount}&type=${pageMaker.cri.type}&keyword=${pageMaker.cri.keyword}" class="page-link">Previous</a>
+            </li>
+        </c:if>
+
+        <!-- 페이지 번호들 -->
+        <c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
+            <li class="paginate_button ${pageMaker.cri.pagenum == num ? 'active' : ''}">
+                <a href="/product/list?pagenum=${num}&amount=${pageMaker.cri.amount}&type=${pageMaker.cri.type}&keyword=${pageMaker.cri.keyword}" class="page-link">${num}</a>
+            </li>
+        </c:forEach>
+
+        <!-- 다음 페이지 및 마지막페이지 -->
+        <c:if test="${pageMaker.next}">
+        
+            <li class="paginate_button next">
+                <a href="/product/list?pagenum=${pageMaker.endPage + 1}&amount=${pageMaker.cri.amount}&type=${pageMaker.cri.type}&keyword=${pageMaker.cri.keyword}" class="page-link">Next</a>
+            </li>
+            
+               <li class="paginate_button last">
+            <a href="/product/list?pagenum=${pageMaker.totalPage}&amount=${pageMaker.cri.amount}&type=${pageMaker.cri.type}&keyword=${pageMaker.cri.keyword}" class="page-link">Last</a>
+        </li>
+            
+        </c:if>
+        
     </ul>
-        </nav>
-        <!-- 페이징처리 끝 -->
+</nav>
+<!-- 페이징처리 끝 -->	
         
         <form id='actionForm' action="/product/list" method='get'>
 	<input type='hidden' name='pagenum' value = '${pageMaker.cri.pagenum }'>
