@@ -74,20 +74,7 @@ public class ReviewServiceTests {
 	    log.info("Modify result: " + result);
 	}
 	
-	//리뷰 목록 조회
-	@Test
-	public void testGetList() {
-		Criteria cri = new Criteria();
-		cri.setPagenum(1);
-		cri.setAmount(10);
-		Long uno = 1L;
-		
-		List<ReviewVO> reviewList = reviewService.getList(cri, uno);
-		
-		for (ReviewVO review : reviewList) {
-            log.info(review);
-        }
-	}
+	
 	
 	
 	

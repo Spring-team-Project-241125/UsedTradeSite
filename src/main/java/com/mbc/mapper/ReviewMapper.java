@@ -20,12 +20,8 @@ public interface ReviewMapper {
 	
 	//수정
 	public int update (ReviewVO review);
+//  유저id 와 상품 제목을 포함한 리뷰 목록을 조회하는 메소드
+	public List<ReviewVO> getReviewListWithProductAndbuyerIdAndsellerId(Criteria cri);
 	
-	//페이징 처리
-	public List<ReviewVO> getListWithPaging(
-			@Param("cri") Criteria cri,
-			@Param("uno") Long uno
-			);
-	
-
+	public List<ReviewVO> getReviewListByUno(Long uno);
 }
