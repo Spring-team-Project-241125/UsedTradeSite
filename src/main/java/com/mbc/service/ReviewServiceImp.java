@@ -61,9 +61,4 @@ public class ReviewServiceImp implements ReviewService {
 		return mapper.getListWithPaging(cri, uno);
 	}
 	
-	@Override
-	public List<ReviewVO> getReviewListByUno(Long uno) {
-		return mapper.getReviewListByUno(uno);
-	}
-	
 }
