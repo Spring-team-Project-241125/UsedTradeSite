@@ -103,17 +103,27 @@
 
 
 <script>
-    // Handle pagination click
-    let actionForm = $("#actionForm");
+    document.addEventListener("DOMContentLoaded", function() {
+        // 페이지 번호 링크들을 가져옵니다.
+        const paginationLinks = document.querySelectorAll(".pagination a");
+        const actionForm = document.getElementById("actionForm");
 
-    $(".pagination a").on("click", function(e) {
-        e.preventDefault();  // Prevent default link behavior
-        
-        // Get the page number from the clicked link and set it in the hidden form
-        actionForm.find("input[name='pagenum']").val($(this).attr("href"));
-        
-        // Submit the form to load the selected page
-        actionForm.submit();
+        paginationLinks.forEach(function(link) {
+            link.addEventListener("click", function(e) {
+                e.preventDefault();  // 기본 링크 동작 방지
+
+                // href 속성에서 pagenum= 값을 추출 (예: list?pagenum=2)
+                const url = link.getAttribute("href");
+                const pageNumMatch = url.match(/pagenum=(\d+)/);  // pagenum=뒤의 숫자를 추출
+
+                if (pageNumMatch) {
+                    const pageNum = pageNumMatch[1];  // 추출한 페이지 번호
+                    const pageInput = actionForm.querySelector("input[name='pagenum']");
+                    pageInput.value = pageNum;  // 페이지 번호를 input에 설정
+                    actionForm.submit();  // 폼 제출
+                }
+            });
+        });
     });
 </script>
 
@@ -121,25 +131,24 @@
  
                 <!-- 검색 조건 시작 -->
                 <div class="row">
-                	<div class="col-lg-12">
-                		<form action="/review/list" method="get" id="searchForm">
-                			<select name="type">
-                				<option value="" ${pageMaker.cri.type==null? 'selected' : '' } >__</option>
-                				<option value="T" ${pageMaker.cri.type eq 'T' ? 'selected' : '' }>제목</option>
-                				<option value="C" ${pageMaker.cri.type eq 'C' ? 'selected' : '' }>내용</option>
-                				<option value="W" ${pageMaker.cri.type eq 'W' ? 'selected' : '' }>작성자</option>
-                				<option value="TC" ${pageMaker.cri.type eq 'TC' ? 'selected' : '' }>제목 or 내용</option>
-                				<option value="TW" ${pageMaker.cri.type eq 'TW' ? 'selected' : '' }>제목 or 작성자</option>
-                				<option value="TCW" ${pageMaker.cri.type eq 'TCW' ? 'selected' : '' }>제목 or 내용 or 작성자</option>
-                			</select>
-                			<input type="text" name="keyword" value="${pageMaker.cri.keyword}">
-                			<input type="hidden" name="pagenum" value="${pageMaker.cri.pagenum}">
-                			<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
-                			<button class="btn btn-default">Search</button>
-                		</form>
-                	</div>
-                </div>
-                <!-- 검색 조건 끝 -->
+    <div class="col-lg-12">
+        <form action="/review/list" method="get" id="searchForm">
+            <select name="type">
+                <option value="" ${pageMaker.cri.type == null ? 'selected' : ''}>--</option>
+                <option value="T" ${pageMaker.cri.type == 'T' ? 'selected' : ''}>상품명</option>
+                <option value="C" ${pageMaker.cri.type == 'C' ? 'selected' : ''}>작성자</option>
+                <option value="W" ${pageMaker.cri.type == 'W' ? 'selected' : ''}>내용</option>
+                <option value="TC" ${pageMaker.cri.type == 'TC' ? 'selected' : ''}>상품명 또는 작성자</option>
+                <option value="TW" ${pageMaker.cri.type == 'TW' ? 'selected' : ''}>상품명 또는 내용</option>
+                <option value="TCW" ${pageMaker.cri.type == 'TCW' ? 'selected' : ''}>상품명, 작성자, 내용</option>
+            </select>
+            <input type="text" name="keyword" value="${pageMaker.cri.keyword}">
+            <input type="hidden" name="pagenum" value="1">
+            <input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+            <button class="btn btn-default">Search</button>
+        </form>
+    </div>
+</div>
 
 
 
