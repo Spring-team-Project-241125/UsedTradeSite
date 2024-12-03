@@ -3,6 +3,8 @@ package com.mbc.domain;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,5 +25,7 @@ public class ProductVO {
 	private Date p_updatedate;
 	
 	private String sellerId; // 판매자 ID 추가
+
+	private List<AttachVO> p_image;
 	
 }

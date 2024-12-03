@@ -4,9 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.mbc.domain.ProductVO;
+import com.mbc.domain.AttachVO;
 import com.mbc.domain.Criteria;
 import com.mbc.mapper.ProductMapper;
+import com.mbc.mapper.AttachMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +26,8 @@ public class ProductServiceImpl implements ProductService{
 	@Autowired
 	private final ProductMapper mapper;
 	
-//	@Autowired
-//	private ProductImageMapper ImageMapper;
+	@Autowired
+	private AttachMapper attachmapper;
 
 	
 	
@@ -40,15 +44,17 @@ public class ProductServiceImpl implements ProductService{
 //	        return product;
 //	    }
 	
-	
-	
+	@Transactional
 	@Override
 	public void register(ProductVO product) {
-		
-		log.info("register......" + product);
-		
-		mapper.insert(product);
-		
+		mapper.insertSelectKey(product); // 상품 정보 등록
+
+	    if (product.getP_image() != null && !product.getP_image().isEmpty()) {
+	        for (AttachVO attach : product.getP_image()) {
+	            attach.setPno(product.getPno());
+	            attachmapper.insertPno(attach); // 상품 이미지 정보 등록
+	        }
+	    }
 	}
 
 	@Override

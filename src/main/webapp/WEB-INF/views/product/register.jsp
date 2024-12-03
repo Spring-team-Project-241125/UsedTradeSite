@@ -8,11 +8,18 @@
 		 <div class="container py-5">
         <h2 class="py-3">판매상품 등록</h2>
     
-        <form role="form" action="/product/register" method="post" enctype="multipart/form-data">
-    <div class="mb-3 col-lg-5">
-        <label for="formFileMultiple" class="form-label">상품 이미지 첨부</label>
-        <input class="form-control" type="file" id="formFileMultiple" name="p_image" multiple>
-    </div> 
+    
+    
+        <form id="productForm" role="form" action="/product/register" method="post" enctype="multipart/form-data">
+        <div class="mb-3 col-lg-5">
+            <label for="formFileMultiple" class="form-label">상품 이미지 첨부</label>
+            <input class="form-control" type="file" id="formFileMultiple" name="p_image" multiple>
+        </div>
+        <div id="imagePreview" class="mb-3">
+            <!-- 업로드된 이미지 미리보기 -->
+        </div>
+    
+    
     <div class="mb-3 col-lg-5">   
         <label for="productTitle" class="form-label">상품명</label>
         <input type="text" class="form-control" id="productTitle" name="p_title" placeholder="상품명을 입력해주세요">
@@ -44,3 +51,43 @@
     </div>
 	
 	<%@include file="../includes/footer.jsp"%>
+	
+	
+	<script>
+	$(document).ready(function() {
+    $('#uploadBtn').on('click', function() {
+        var formData = new FormData();
+        var files = $('#formFileMultiple')[0].files;
+
+        // 선택된 파일이 있을 경우에만 업로드
+        if (files.length > 0) {
+            // FormData에 파일 추가
+            for (var i = 0; i < files.length; i++) {
+                formData.append("p_image", files[i]);
+            }
+
+            $.ajax({
+                url: '/product/uploadImage',  // 서버에서 이미지를 처리할 URL
+                type: 'POST',
+                data: formData,
+                processData: false,  // FormData 사용시 false
+                contentType: false,  // FormData 사용시 false
+                success: function(response) {
+                    if (response.success) {
+                        // 성공적으로 업로드되면 이미지 미리보기
+                        var imgPreview = '<img src="' + response.imageUrl + '" alt="Uploaded Image" class="img-thumbnail" width="100">';
+                        $('#imagePreview').html(imgPreview);
+                    } else {
+                        alert('이미지 업로드 실패');
+                    }
+                },
+                error: function() {
+                    alert('서버 오류로 이미지 업로드 실패');
+                }
+            });
+        } else {
+            alert('파일을 선택해주세요');
+        }
+    });
+});
+	</script>
