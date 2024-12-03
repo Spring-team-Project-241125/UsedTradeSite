@@ -1,19 +1,28 @@
 package com.mbc.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mbc.domain.UserVO;
+import com.mbc.mapper.AttachMapper;
+import com.mbc.domain.AttachVO;
 import com.mbc.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,8 +40,7 @@ public class UserController {
 	public void myStroe(@RequestParam("uno") Long uno, Model model) {
 		log.info("my store...");
 		
-		model.addAttribute("vo", service.get(uno));
-		
+		model.addAttribute("vo", service.get(uno));		
 		
 	}
 	
@@ -49,6 +57,10 @@ public class UserController {
 	@PostMapping("/register")
 	 public String register(UserVO vo) {
 		log.info("register : " + vo);
+		
+		if(vo.getAttachList() != null) {
+			vo.getAttachList().forEach(attach -> log.info(attach));
+		}
 		
 		service.register(vo);
 		log.info("register after : " + vo);
@@ -84,11 +96,53 @@ public class UserController {
 		
 		log.info("remove..." + uno);
 		
+		List<AttachVO> attachList = service.getAttachList(uno);
+		
 		if(service.remove(uno) == 1) {
-			rttr.addAttribute("result", "success");
+			deleteFiles(attachList);
+			
+			rttr.addFlashAttribute("result", "success");
 		}
 
 		return "redirect:/login";
 	}
 	
+	@GetMapping(value = "/getAttachList",
+			produces = {MediaType.APPLICATION_JSON_VALUE})
+	@ResponseBody
+	public ResponseEntity<List<AttachVO>> getAttachList(Long uno){
+		log.info("getAttachList" + uno);
+		
+		return new ResponseEntity<>(service.getAttachList(uno), HttpStatus.OK);
+	}	
+	
+	private void deleteFiles(List<AttachVO> attachList) {
+		
+		if(attachList == null || attachList.size() == 0) {
+			return;
+		}
+		
+		log.info("delete attach files.....");
+		log.info(attachList);
+		
+		attachList.forEach(attach -> {
+			try {
+				Path file = Paths.get("C:\\upload\\" + attach.getUploadPath() + "\\" + 
+									attach.getUuid() + "_" + attach.getFileName());
+				
+				Files.deleteIfExists(file);
+				
+				
+				Path thumbnail = Paths.get("C:\\upload\\" + attach.getUploadPath() + "\\s_" + 
+								attach.getUuid() + "_" + attach.getFileName());
+				
+				Files.delete(thumbnail);
+				
+				
+			}catch(Exception e) {
+				log.error("delete file error" + e.getMessage());
+			}
+		});
+	}
+
 }

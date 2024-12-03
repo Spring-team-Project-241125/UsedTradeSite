@@ -2,6 +2,8 @@ package com.mbc.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.mbc.domain.ProductVO;
 import com.mbc.domain.Criteria;
 

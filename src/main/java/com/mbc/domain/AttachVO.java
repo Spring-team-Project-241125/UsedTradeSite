@@ -3,7 +3,7 @@ package com.mbc.domain;
 import lombok.Data;
 
 @Data
-public class attachVO {
+public class AttachVO {
 
 	private String uuid;
 	private String uploadPath;

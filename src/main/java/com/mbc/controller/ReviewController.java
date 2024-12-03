@@ -38,12 +38,17 @@ public class ReviewController {
 
 		// 서비스에서 전체 리뷰 목록을 가져옴
 		List<ReviewVO> reviews = service.getReviewListWithProductAndbuyerIdAndsellerId(cri);
-				        
+				   
+		  // 전체 리뷰 수를 가져옴
+        int totalCount = service.getTotalCount(cri);
+        
+        // PageDTO 객체를 사용하여 페이지 정보 계산
+        PageDTO pageMaker = new PageDTO(cri, totalCount);
 		
 		// 모델에 데이터 추가
 		model.addAttribute("list", reviews);
 		
-		model.addAttribute("pageMaker", new PageDTO(cri, 123));
+		model.addAttribute("pageMaker", pageMaker);
 		
 		}
 		

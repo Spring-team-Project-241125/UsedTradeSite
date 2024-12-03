@@ -34,28 +34,83 @@
 		where rno = #{rno}
 	</update>
 	
+	
+	
+	<sql id="criteria">
+  <trim prefix="(" suffix=")" prefixOverrides="OR">
+    <foreach item="type" collection="typeArr" separator="OR">
+      
+      <if test="type == 'T'.toString()">
+        r.pno in (
+          select p.pno
+          from Products p
+          where UPPER(p.p_title) like '%' || UPPER(#{keyword}) || '%'
+        )
+      </if>
+      
+      <if test="type == 'C'.toString()">
+        r.rno in (
+          select r.rno
+          from Reviews r
+          join Users u on r.uno = u.uno
+          where UPPER(u.id) like '%' || UPPER(#{keyword}) || '%'
+        )
+      </if>
+      
+      <if test="type == 'W'.toString()">
+        -- Reviews 테이블에서 r_content를 대소문자 구분 없이 검색
+        r.rno in (
+          select r.rno
+          from Reviews r
+          where UPPER(r.r_content) like '%' || UPPER(#{keyword}) || '%'
+        )
+      </if>
+    </foreach>
+  </trim>
+</sql>
 
-	<!-- 리뷰 목록을 조회하고, 상품명(p_title)과 작성자 ID(sellerId)도 포함하는 쿼리 -->
 <select id="getReviewListWithProductAndbuyerIdAndsellerId" resultType="com.mbc.domain.ReviewVO">
   <![CDATA[
   select r.rno, r.pno, r.uno, r.r_content, r.r_regdate,
-         p.p_title, -- 상품 제목
-         buyer.id AS buyerId, -- 구매자 ID
-         u.id AS sellerId -- 판매자 ID
+         p.p_title, 
+         buyer.id AS buyerId, 
+         u.id AS sellerId 
   from (
-        select rno, pno, uno, r_content, r_regdate, rownum rn
-        from (
-            select r.rno, r.pno, r.uno, r.r_content, r.r_regdate
-            from Reviews r
-            order by r.rno desc  -- 정렬이 먼저 이루어짐
-        )
-    ) r
-  left join Products p ON r.pno = p.pno -- 상품 정보 조인
-  left join Users u ON p.uno = u.uno -- 판매자 정보 조인
-  left join Users buyer ON r.uno = buyer.uno -- 구매자 정보 조인
-  where r.rn between (#{pagenum} - 1) * #{amount} + 1 and #{pagenum} * #{amount}
+      select rno, pno, uno, r_content, r_regdate, rownum rn
+      from (
+          select r.rno, r.pno, r.uno, r.r_content, r.r_regdate
+          from Reviews r
+          order by r.rno desc
+      )
+  ) r
+  left join Products p ON r.pno = p.pno  
+  left join Users u ON p.uno = u.uno  
+  left join Users buyer ON r.uno = buyer.uno  
   ]]>
+  <where>
+    <include refid="criteria" />
+    <![CDATA[
+      AND r.rn between  (#{pagenum} - 1) * #{amount} + 1 and #{pagenum} * #{amount}
+  ]]>
+  </where>
 </select>
+
+
+
+
+
+<select id="getTotalCount" resultType="int">
+  	SELECT count(*) 
+  	FROM Reviews r
+  	<where>
+      	<include refid="criteria"></include>
+  	</where>
+</select>
+
+
+
+
+
 		  
 <select id="getReviewListByUno" resultType="com.mbc.domain.ReviewVO">
    SELECT 
