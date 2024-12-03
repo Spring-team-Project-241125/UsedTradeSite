@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mbc.domain.attachVO;
+import com.mbc.domain.AttachVO;
 
 import lombok.extern.log4j.Log4j;
 import net.coobird.thumbnailator.Thumbnailator;
@@ -44,11 +44,11 @@ public class UploadController {
 	@PostMapping(value = "/uploadAjaxAction", produces = MediaType.
 			APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<List<attachVO>> 
+	public ResponseEntity<List<AttachVO>> 
 		uploadAjaxPost(MultipartFile[] uploadFile) {		
 		log.info("upload ajax post.....");
 		
-		List<attachVO> list = new ArrayList<>();		
+		List<AttachVO> list = new ArrayList<>();		
 		String uploadFolder = "C:\\upload";
 		
 		String uploadFolderPath = getFolder();  // 2025\01\01
@@ -65,7 +65,7 @@ public class UploadController {
 			log.info("Upload File Name : " + multipartFile.getOriginalFilename());
 			log.info("Upload File Size : " + multipartFile.getSize());
 			
-			attachVO attachVO = new attachVO();  // 첨부파일 객체 생성
+			AttachVO attachVO = new AttachVO();  // 첨부파일 객체 생성
 			
 			String uploadFileName = multipartFile.getOriginalFilename();
 			

@@ -12,7 +12,9 @@
 
         <form>
             <div class="mb-3 col-lg-5">
-                <img alt="profile" src="/resources/img/unknown.jpg" width="200px">
+            	<div class="uploadResult">   	
+	                <ul></ul>
+            	</div>
             </div> 
             <div class="mb-3 col-lg-5">   
                 <label for="userId" class="form-label">아이디</label>
@@ -24,6 +26,11 @@
                 <input type="password" class="form-control" id="userPwd"
                  name="pwd" value="${ vo.pwd }" readonly>
             </div>
+            <div class="mb-3 col-lg-5"> 
+                <label for="phone" class="form-label">전화번호</label>
+                <input type="text" class="form-control" id="phone" 
+                 name="phone"  value="${ vo.phone }">
+            </div>
 
             <button type="button" class="btn btn-primary mt-3" 
             onclick="location.href='/user/modify?uno=${vo.uno}'">회원정보 수정</button>
@@ -31,3 +38,43 @@
     </div>
 
 <%@include file="../includes/footer.jsp" %>
+
+<script>
+$(function(){
+	let uno = '<c:out value="${vo.uno}" />';
+	
+	$.ajax({
+		url: '/user/getAttachList',
+		method: 'get',
+		data: {uno: uno},
+		dataType: 'json',
+		success: function(result){
+			console.log(result);
+			
+			let str = '';
+			
+			$(result).each(function(i, attach){
+				// image type
+				if(attach.fileType){
+					let fileCallPath = encodeURIComponent(attach.uploadPath + '/s_' 
+							+ attach.uuid + '_' + attach.fileName);
+					
+					str += '<li data-path="'+ attach.uploadPath +'" data-uuid="'+ attach.uuid;
+					str += '" data-filename="'+ attach.fileName +'" data-type="'+ attach.fileType +'">';
+					str += '<img src="/display?fileName='+ fileCallPath +'">';
+					str += '</li>';
+				}else {										
+					str += '<li data-path="'+ attach.uploadPath +'" data-uuid="'+ attach.uuid;
+					str += '" data-filename="'+ attach.fileName +'" data-type="'+ attach.fileType +'">';
+					str += '<span>'+ attach.fileName + '</span><br>';
+					str += '<img alt="profile" src="/resources/img/unknown.jpg" width="100px">';
+					str += '</li>';
+				}
+			});
+			$('.uploadResult ul').html(str);
+
+		}
+	});
+	
+});
+</script>

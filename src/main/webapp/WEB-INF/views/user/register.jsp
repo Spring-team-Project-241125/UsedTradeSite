@@ -10,12 +10,16 @@
     <div class="container py-5">
         <h2 class="py-3">회원 가입</h2>
 
-        <form action="/user/register" method="post">
-        	
+        <form action="/user/register" method="post" >
+        
             <div class="mb-3 col-lg-5">
                 <label for="profile" class="form-label">프로필 사진</label>
-                <input class="form-control" type="file" id="profile" name="u_img_name">
-            </div> 
+                <input class="form-control" type="file" id="profile" name="uploadFile">
+                <div class="uploadResult">
+					<ul>
+					</ul>
+				</div>                
+            </div>         	
             <div class="mb-3 col-lg-5">   
                 <label for="userId" class="form-label">아이디</label>
                 <input type="text" class="form-control" id="userId" name="id" placeholder="아이디를 입력해주세요">
@@ -59,7 +63,7 @@
 
 <script>
 	$(function(){
-		const checkIdModel = $('#chekcIdModal')
+		const checkIdModel = $('#chekcIdModal');
 		
 		$('#checkIdBtn').click(function(){
 			const id = $('#userId').val();
@@ -88,74 +92,25 @@
 			e.preventDefault();
 			
 			alert("회원에 가입되었습니다.\n로그인후 이용해주세요~");
-			formObj.submit();
-		});
-		
-		// 파일 업로드 유효성 검사
-		const regex = new RegExp('(.*?)\.(exe|sh|zip|alz)$');
-		const maxSize = 5242880;  // 5MB
-		
-		function checkExtension(fileName, fileSize){
-			if(fileSize >= maxSize){
-				alert('파일 사이즈 초과');
-				return false;
-			}
-			
-			if(regex.test(fileName)){
-				alert('해당 종류의 파일은 업로드할 수 없습니다.');
-				return false;
-			}
-			
-			return true;
-		}
-		
-		// <input type="file">의 내용이 변경되는 것을 감지
-		$('input[type="file"]').change(function(e){
-			const formData = new FormData();
-			const inputFile = $('input[name="uploadFile"]');
-			let files = inputFile[0].files;
-			
-			for(let i=0; i<files.lenght; i++){
-				if(!checkExtension(files[i].name, files[i].size)){
-					return false;
-				}
-				
-				formData.append('uploadFile', files[i]);
-			}
-			
-			$.ajax({
-				url: '/uploadAjaxAction',
-				type: 'post',
-				processData: false,
-				contentType: false,
-				data: formData,
-				dataType: 'json',
-				success: function(result){
-					console.log(result);
-					showUploadResult(result); // 업로드 결과 처리 함수 호출
-				}
-			});
-		});
-		
-		// 업로드된 결과를 화면에 섬네일 등을 만들어서 처리하는 부분
-		function showUploadResult(uploadResultArr) {
-			if(!uploadResultArr || uploadResultArr.length == 0){return;}
-			
-			const uploadUL = $('.uploadResult ul');
-			
+
+			// 첨부파일 정보는 <input type="hidden">으로 처리하고
+			// form 태그로 전송하는 부분
 			let str = '';
 			
-			$(uploadResultArr).each(function(i, obj){
-				// image type
-				if(obj.image){
-					
-				}else {
-					
-				}
+			$('.uploadResult ul li').each(function(i, obj){
+				const jobj = $(obj);
+				console.dir(jobj);  //JavaScript 객체 속성을 인터랙티브한 목록으로 표시
+				
+				str += '<input type="hidden" name="attachList['+ i +'].fileName" value="'+ jobj.data('filename') +'">';
+				str += '<input type="hidden" name="attachList['+ i +'].uuid" value="'+ jobj.data('uuid') +'">';
+				str += '<input type="hidden" name="attachList['+ i +'].uploadPath" value="'+ jobj.data('path') +'">';
+				str += '<input type="hidden" name="attachList['+ i +'].fileType" value="'+ jobj.data('type') +'">';
 			});
 			
-			uploadUL.append(str);
-		}
+			formObj.append(str).submit();
 
-	});
+		});
+	});		
 </script>
+
+<%@include file="../includes/file_register.jsp" %>
