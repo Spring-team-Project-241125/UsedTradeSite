@@ -11,6 +11,7 @@
 
     <!-- bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- WEB Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,6 +33,22 @@
             margin-bottom: 0.3rem;
             color: #999;
         }
+        
+
+		ul, li {
+			list-style: none;
+			padding: 0;
+		}
+		
+		.uploadResult ul li {		   
+		   padding: 10px;
+		   display: inline-block;
+		}
+		
+		.uploadResult ul li img {
+		   width: 100px;
+		}
+
     </style>
 </head>
 

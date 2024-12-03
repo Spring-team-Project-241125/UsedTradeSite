@@ -19,4 +19,10 @@ public interface AttachMapper {
 	public void insertRno(AttachVO vo);
 	
 	public void delete(String uuid);
+	
+	public void deleteAllUno(Long uno);
+	
+	public void deleteAllPno(Long pno);
+	
+	public void deleteAllRno(Long rno);
 }
