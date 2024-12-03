@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.mbc.domain.ProductVO;
-import com.mbc.domain.attachVO;
+import com.mbc.domain.AttachVO;
 import com.mbc.domain.Criteria;
 import com.mbc.domain.PageDTO;
 import com.mbc.service.ProductService;
@@ -79,7 +79,7 @@ public class ProductController {
 	    product.setUno(uno);
 
 	    // 첨부파일 저장 처리
-	    List<attachVO> attachList = new ArrayList<>();
+	    List<AttachVO> attachList = new ArrayList<>();
 	    String uploadFolder = "C:\\upload";
 	    String uploadFolderPath = getFolder();
 
@@ -99,7 +99,7 @@ public class ProductController {
 	                file.transferTo(saveFile);
 
 	                // attachVO 객체 생성
-	                attachVO attach = new attachVO();
+	                AttachVO attach = new AttachVO();
 	                attach.setUuid(uuid);
 	                attach.setFileName(originalFileName);
 	                attach.setUploadPath(uploadFolderPath);
@@ -135,19 +135,19 @@ public class ProductController {
 	    return str.replace("-", File.separator);
 	}
 
-	private String checkImageType(File file) {
+	private boolean checkImageType(File file) {
 	    try {
 	        // 파일의 MIME 타입을 확인
 	        String contentType = Files.probeContentType(file.toPath());
 	        
 	        // MIME 타입이 image로 시작하는지 확인
 	        if (contentType != null && contentType.startsWith("image")) {
-	            return "I";  // 이미지 파일일 경우 'I' 반환
+	            return true;  // 이미지 파일일 경우 'I' 반환
 	        }
 	    } catch (Exception e) {
 	        log.error("파일 타입 확인 오류: " + e.getMessage());
 	    }
-	    return "O";  // 이미지가 아닌 파일은 'O' 반환
+	    return false;  // 이미지가 아닌 파일은 'O' 반환
 	}
 	
 	@GetMapping({"/get","/modify"})

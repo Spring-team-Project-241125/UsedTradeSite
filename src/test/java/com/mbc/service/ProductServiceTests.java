@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.mbc.domain.ProductVO;
-import com.mbc.domain.attachVO;
+import com.mbc.domain.AttachVO;
 import com.mbc.domain.Criteria;
 
 import lombok.extern.log4j.Log4j;
@@ -37,20 +37,20 @@ public class ProductServiceTests {
 	    product.setP_quantity(100L);  // 예시 수량
 	    
 	    // 첨부파일 정보 설정 (attachVO 객체 생성)
-	    List<attachVO> attachList = new ArrayList<>();
+	    List<AttachVO> attachList = new ArrayList<>();
 	    
-	    attachVO attach1 = new attachVO();
+	    AttachVO attach1 = new AttachVO();
 	    attach1.setUuid("uuid1");
 	    attach1.setUploadPath("/upload");
 	    attach1.setFileName("file1.jpg");
-	    attach1.setFileType("I");  // fileType 예시 (이미지로 설정)
+	    attach1.setFileType(true);  // fileType 예시 (이미지로 설정)
 	    attach1.setPno(product.getPno());  // 실제 product.getPno()에 맞게 설정
 	    
-	    attachVO attach2 = new attachVO();
+	    AttachVO attach2 = new AttachVO();
 	    attach2.setUuid("uuid2");
 	    attach2.setUploadPath("/upload");
 	    attach2.setFileName("file2.jpg");
-	    attach2.setFileType("I");  // fileType 예시 (이미지로 설정)
+	    attach2.setFileType(true);  // fileType 예시 (이미지로 설정)
 	    attach2.setPno(product.getPno());  // 실제 product.getPno()에 맞게 설정
 	    
 	    attachList.add(attach1);
