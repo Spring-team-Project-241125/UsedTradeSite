@@ -99,4 +99,15 @@ public class ReviewMapperTests {
 	    // 결과 출력
 	    list.forEach(review -> log.info(review));  // 리뷰 번호 출력
 	}
+	
+	@Test
+	public void testSearch() {
+		Criteria cri = new Criteria();
+		cri.setKeyword("새로");
+		cri.setType("TC");
+		
+		List<ReviewVO> list = mapper.getReviewListWithProductAndbuyerIdAndsellerId(cri);
+		
+		list.forEach(review -> log.info(review));
+	}
 }

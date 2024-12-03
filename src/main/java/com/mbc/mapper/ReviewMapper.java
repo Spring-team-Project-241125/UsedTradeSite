@@ -23,5 +23,8 @@ public interface ReviewMapper {
 //  유저id 와 상품 제목을 포함한 리뷰 목록을 조회하는 메소드
 	public List<ReviewVO> getReviewListWithProductAndbuyerIdAndsellerId(Criteria cri);
 	
+	public int getTotalCount(Criteria cri);
+	
+	
 	public List<ReviewVO> getReviewListByUno(Long uno);
 }

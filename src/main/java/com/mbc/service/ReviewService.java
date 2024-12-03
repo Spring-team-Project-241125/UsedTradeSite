@@ -20,5 +20,7 @@ public interface ReviewService {
 	
 	public List<ReviewVO> getReviewListWithProductAndbuyerIdAndsellerId(Criteria cri);
 	
+	public int getTotalCount(Criteria cri);
+	
 	public List<ReviewVO> getReviewListByUno(Long uno);
 }

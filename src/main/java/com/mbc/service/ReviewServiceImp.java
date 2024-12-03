@@ -64,5 +64,11 @@ public class ReviewServiceImp implements ReviewService {
 	public List<ReviewVO> getReviewListByUno(Long uno) {
 		return mapper.getReviewListByUno(uno);
 	}
+
+	@Override
+	public int getTotalCount(Criteria cri) {
+		
+		return mapper.getTotalCount(cri);
+	}
 	
 }
