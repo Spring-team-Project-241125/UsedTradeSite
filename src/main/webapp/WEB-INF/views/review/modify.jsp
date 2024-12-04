@@ -44,6 +44,13 @@
             
             <!-- 취소 버튼 (리스트 페이지로 이동) -->
             <a href="/review/list" class="btn btn-danger">취소</a>
+            
+            <!-- 수정, 삭제 버튼을 본인에게만 보이도록 -->
+          <%--   <c:if test="${review.buyerId == loggedInUserId}">
+            	
+            	<a href="/review/remove?rno=${review.rno}" class="btn btn-danger">삭제</a>
+            </c:if> --%>
+            
         </div>
         
     </form>
