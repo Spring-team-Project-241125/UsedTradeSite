@@ -40,9 +40,6 @@ public class ReviewMapperTests {
 	        vo.setPno(pnoArr[i % 5]);  // pno 배열 값 설정
 	        vo.setUno(pnoArr[i % 5]);  // uno 배열 값 설정
 	        vo.setR_content("리뷰 테스트" + i);  // r_content 값 설정
-	        vo.setR_img_path("");  // r_img_path 값 설정
-	        vo.setR_img_name("");  // r_img_name 값 설정
-	        vo.setR_img_o_name("");  // r_img_o_name 값 설정
 						
 						
 				

@@ -34,10 +34,6 @@ public class ReviewServiceTests {
 	    vo.setPno(4L);
 	    vo.setUno(4L);
 	    vo.setR_content("안녕하세요");
-	    vo.setR_img_path("");
-	    vo.setR_img_name("");
-	    vo.setR_img_o_name("");
-	    
 	    // 리뷰 등록 서비스 호출
 	    reviewService.register(vo);
 	    
@@ -63,9 +59,6 @@ public class ReviewServiceTests {
 	    vo.setPno(1L);
 	    vo.setUno(1L);
 	    vo.setR_content("내용을 수정합니다");
-	    vo.setR_img_path("");
-	    vo.setR_img_name("");
-	    vo.setR_img_o_name("");
 	    
 	    // 리뷰 수정 서비스 호출
 	    int result = reviewService.modify(vo);

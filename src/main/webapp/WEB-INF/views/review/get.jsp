@@ -7,9 +7,16 @@
 
 <div class="container py-5">
     <h2 class="py-3">리뷰 상세보기</h2>
+    
 
     <!-- 리뷰 상세 폼 -->
     <form role="form" action="/review/update" method="post" enctype="multipart/form-data">
+			
+		 <div class="mb-3 col-lg-5">
+            	<div class="uploadResult">   	
+	                <ul></ul>
+            	</div>
+            </div> 
 
         <div class="mb-3">
             <label for="pno" class="form-label">상품명 및 판매자</label>
@@ -73,3 +80,43 @@
 </div>
 
 <%@ include file="../includes/footer.jsp" %>
+
+<script>
+$(function(){
+	let rno = '<c:out value="${review.rno}" />';
+	
+	$.ajax({
+		url: '/review/getAttachList',
+		method: 'get',
+		data: {rno: rno},
+		dataType: 'json',
+		success: function(result){
+			console.log(result);
+			
+			let str = '';
+			
+			$(result).each(function(i, attach){
+				// image type
+				if(attach.fileType){
+					let fileCallPath = encodeURIComponent(attach.uploadPath + '/' 
+							+ attach.uuid + '_' + attach.fileName);
+					
+					str += '<li data-path="'+ attach.uploadPath +'" data-uuid="'+ attach.uuid;
+					str += '" data-filename="'+ attach.fileName +'" data-type="'+ attach.fileType +'">';
+					str += '<img src="/display?fileName='+ fileCallPath +'">';
+					str += '</li>';
+				}else {										
+					str += '<li data-path="'+ attach.uploadPath +'" data-uuid="'+ attach.uuid;
+					str += '" data-filename="'+ attach.fileName +'" data-type="'+ attach.fileType +'">';
+					str += '<span>'+ attach.fileName + '</span><br>';
+					str += '<img alt="profile" src="/resources/img/unknown.jpg" width="100px">';
+					str += '</li>';
+				}
+			});
+			$('.uploadResult ul').html(str);
+
+		}
+	});
+	
+});
+</script>
