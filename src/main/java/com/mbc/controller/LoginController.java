@@ -10,7 +10,7 @@ import lombok.extern.log4j.Log4j;
 public class LoginController {
 	
 	@GetMapping("/login")
-	public void loginInput() {
+	public void login() {
 		
 	}
 }

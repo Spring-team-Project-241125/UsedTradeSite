@@ -37,7 +37,7 @@
 	
 	
 	<sql id="criteria">
-  <trim prefix="(" suffix=")" prefixOverrides="OR">
+  <trim prefix="(" suffix=") AND">
     <foreach item="type" collection="typeArr" separator="OR">
       
       <if test="type == 'T'.toString()">
@@ -72,27 +72,33 @@
 <select id="getReviewListWithProductAndbuyerIdAndsellerId" resultType="com.mbc.domain.ReviewVO">
   <![CDATA[
   select r.rno, r.pno, r.uno, r.r_content, r.r_regdate,
-         p.p_title, 
-         buyer.id AS buyerId, 
-         u.id AS sellerId 
+         r.p_title, 
+         r.buyerId, 
+         r.sellerId 
   from (
-      select rno, pno, uno, r_content, r_regdate, rownum rn
+      select r.rno, r.pno, r.uno, r.r_content, r.r_regdate,
+         r.p_title, 
+         r.buyerId, 
+         r.sellerId , rownum rn
       from (
-          select r.rno, r.pno, r.uno, r.r_content, r.r_regdate
+          select r.rno, r.pno, r.uno, r.r_content, r.r_regdate,
+          p.p_title, 
+          buyer.id AS buyerId, 
+          u.id AS sellerId 
           from Reviews r
-          order by r.rno desc
-      )
-  ) r
-  left join Products p ON r.pno = p.pno  
-  left join Users u ON p.uno = u.uno  
-  left join Users buyer ON r.uno = buyer.uno  
+          left join Products p ON r.pno = p.pno  
+ 		  left join Users u ON p.uno = u.uno  
+ 		  left join Users buyer ON r.uno = buyer.uno 
+ 		  order by r.rno desc
+      ) r
+   	where
   ]]>
-  <where>
-    <include refid="criteria" />
+   <include refid="criteria"></include>
     <![CDATA[
-      AND r.rn between  (#{pagenum} - 1) * #{amount} + 1 and #{pagenum} * #{amount}
+      rownum <= #{pagenum} * #{amount}
+      ) r
+  where rn > (#{pagenum} - 1) * #{amount}
   ]]>
-  </where>
 </select>
 
 

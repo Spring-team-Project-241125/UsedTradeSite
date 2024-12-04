@@ -38,18 +38,21 @@
     <div class="container py-5">
         <h2 class="py-3">상품 목록</h2>
         <div class="d-flex justify-content-end">
-        	 <a href="/product/register" class="btn btn-primary mb-3">상품등록</a>
+         <sec:authorize access="isAuthenticated()">
+        <a href="/product/register" class="btn btn-primary mb-3">상품등록</a>
+    </sec:authorize>
+    <sec:authorize access="!isAuthenticated()">
+        <a href="/login" class="btn btn-primary mb-3">상품등록</a>
+    </sec:authorize>
 		</div>
         <div class="container">
     <div class="row">
         <c:forEach items="${productList}" var="product">
-            <div class="col-lg-3 col-sm-6">
-                <div class="pimg">
-                <a href="/product/get?pno=${product.pno}">
-                    <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?q=80&w=1353&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                     alt="${product.p_title}" width="100%">
-                     </a>
-                </div>
+            <div class="col-lg-3 col-sm-6 product-container" data-pno="${product.pno}">
+            <a href="/product/get?pno=${product.pno}">
+                <div class="uploadResult">   	
+	                <ul></ul>
+            </div>
                 <div class="pcontent pt-3">
                 <a href="/product/get?pno=${product.pno}">
                     <h3>${product.p_title}</h3>
@@ -184,6 +187,41 @@
 <!-- 수정 완료 모달 끝 -->
 
 <%@include file="../includes/footer.jsp" %>
+
+<script>
+$(function () {
+    // 상품별로 AJAX 호출
+    $('.product-container').each(function () {
+        let container = $(this); // 현재 상품 컨테이너
+        let pno = container.data('pno'); // data-pno에서 pno 값 추출
+
+        // AJAX 요청
+        $.ajax({
+            url: '/product/getAttachList',
+            method: 'get',
+            data: { pno: pno },
+            dataType: 'json',
+            success: function (result) {
+                console.log("pno:", pno, "result:", result);
+
+                let str = '';
+                
+                	 let fileCallPath = encodeURIComponent(
+                			 result[0].uploadPath + '/' + result[0].uuid + '_' + result[0].fileName
+                         );
+                         str += '<li data-path="' + result[0].uploadPath + '" data-uuid="' + result[0].uuid;
+                         str += '" data-filename="' + result[0].fileName + '" data-type="' + result[0].fileType + '">';
+                         str += '<img src="/display?fileName=' + fileCallPath + '">';
+                         str += '</li>';
+               
+
+                // 현재 상품의 uploadResult에 결과 추가
+                container.find('.uploadResult ul').html(str);
+            }
+        });
+    });
+});
+</script>
 
 <script>
     $(document).ready(function(){
