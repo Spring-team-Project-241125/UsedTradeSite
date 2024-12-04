@@ -89,6 +89,28 @@
     </ul>
 </nav>
 
+   <!-- 검색 폼 추가: 페이지 네비게이션 아래 -->
+<div class="mt-4 d-flex justify-content-center">
+    <form action="/review/list" method="get" id="searchForm" class="d-flex align-items-center">
+        <!-- 선택박스 크기 키우기 -->
+        <select name="type" class="form-select form-select-sm mx-2" style="max-width: 170px; font-size: 16px;">
+            <option value="" ${pageMaker.cri.type == null ? 'selected' : ''}>--</option>
+            <option value="T" ${pageMaker.cri.type == 'T' ? 'selected' : ''}>상품명</option>
+            <option value="C" ${pageMaker.cri.type == 'C' ? 'selected' : ''}>작성자</option>
+            <option value="W" ${pageMaker.cri.type == 'W' ? 'selected' : ''}>내용</option>
+            <option value="TC" ${pageMaker.cri.type == 'TC' ? 'selected' : ''}>상품명 또는 작성자</option>
+            <option value="TW" ${pageMaker.cri.type == 'TW' ? 'selected' : ''}>상품명 또는 내용</option>
+            <option value="TCW" ${pageMaker.cri.type == 'TCW' ? 'selected' : ''}>상품명, 작성자, 내용</option>
+        </select>
+
+        <!-- 입력창 크기 키우기 -->
+        <input type="text" name="keyword" value="${pageMaker.cri.keyword}" class="form-control form-control-sm mx-2" style="width: 350px; font-size: 16px; padding: 0.3rem;">
+
+        <!-- 버튼 크기 키우기 -->
+        <button class="btn btn-primary btn-sm" style="font-size: 16px; padding: 0.3rem 1rem;">Search</button>
+    </form>
+</div>
+
 <!-- Hidden Form for Pagination -->
 <form id="actionForm" action="/review/list" method="get">
     <input type="hidden" name="pagenum" value="${pageMaker.cri.pagenum}">
@@ -129,26 +151,6 @@
 
 
  
-                <!-- 검색 조건 시작 -->
-                <div class="row">
-    <div class="col-lg-12">
-        <form action="/review/list" method="get" id="searchForm">
-            <select name="type">
-                <option value="" ${pageMaker.cri.type == null ? 'selected' : ''}>--</option>
-                <option value="T" ${pageMaker.cri.type == 'T' ? 'selected' : ''}>상품명</option>
-                <option value="C" ${pageMaker.cri.type == 'C' ? 'selected' : ''}>작성자</option>
-                <option value="W" ${pageMaker.cri.type == 'W' ? 'selected' : ''}>내용</option>
-                <option value="TC" ${pageMaker.cri.type == 'TC' ? 'selected' : ''}>상품명 또는 작성자</option>
-                <option value="TW" ${pageMaker.cri.type == 'TW' ? 'selected' : ''}>상품명 또는 내용</option>
-                <option value="TCW" ${pageMaker.cri.type == 'TCW' ? 'selected' : ''}>상품명, 작성자, 내용</option>
-            </select>
-            <input type="text" name="keyword" value="${pageMaker.cri.keyword}">
-            <input type="hidden" name="pagenum" value="1">
-            <input type="hidden" name="amount" value="${pageMaker.cri.amount}">
-            <button class="btn btn-default">Search</button>
-        </form>
-    </div>
-</div>
 
 
 
