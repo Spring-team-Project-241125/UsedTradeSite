@@ -63,10 +63,6 @@ public class ReviewControllerTests {
 	    vo.setPno(5L);
 	    vo.setUno(5L);
 	    vo.setR_content("레지스터 테스트!!");
-	    vo.setR_img_path("");
-	    vo.setR_img_name("");
-	    vo.setR_img_o_name("");
-	    
 	    // 리뷰 등록 서비스 호출
 	    reviewService.register(vo);
 	    
