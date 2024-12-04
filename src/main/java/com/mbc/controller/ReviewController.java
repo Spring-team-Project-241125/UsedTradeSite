@@ -1,9 +1,15 @@
 package com.mbc.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,8 +17,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.mbc.domain.AttachVO;
 import com.mbc.domain.Criteria;
 import com.mbc.domain.PageDTO;
 import com.mbc.domain.ReviewVO;
@@ -73,6 +81,11 @@ public class ReviewController {
 		       long pno = (int) (Math.random() * 5) + 1;
 		       vo.setPno(pno); // 하드코딩된 uno 설정
 
+		       if(vo.getAttachList() != null) {
+					vo.getAttachList().forEach(attach -> log.info(attach));
+				}
+		       
+		       
 		       log.info("register:========== " + vo);
 		       
 		       service.register(vo);
@@ -103,7 +116,11 @@ public class ReviewController {
 		public String remove(Long rno, Criteria cri, RedirectAttributes rttr) {
 			log.info("remove : " + rno );
 			
+			List<AttachVO> attachList = service.getAttachList(rno);
+			
 			if(service.remove(rno)==1) {
+				deleteFiles(attachList);
+				
 				rttr.addFlashAttribute("result", "success");
 			}
 			return "redirect:/review/list";
@@ -116,5 +133,44 @@ public class ReviewController {
 			
 			log.info("/get");
 			model.addAttribute("review", service.get(rno));
+		}
+		
+		
+		@GetMapping(value = "/getAttachList",
+				produces = {MediaType.APPLICATION_JSON_VALUE})
+		@ResponseBody
+		public ResponseEntity<List<AttachVO>> getAttachList(Long rno){
+			log.info("getAttachList" + rno);
+			
+			return new ResponseEntity<>(service.getAttachList(rno), HttpStatus.OK);
+		}	
+		
+		private void deleteFiles(List<AttachVO> attachList) {
+			
+			if(attachList == null || attachList.size() == 0) {
+				return;
+			}
+			
+			log.info("delete attach files.....");
+			log.info(attachList);
+			
+			attachList.forEach(attach -> {
+				try {
+					Path file = Paths.get("C:\\upload\\" + attach.getUploadPath() + "\\" + 
+										attach.getUuid() + "_" + attach.getFileName());
+					
+					Files.deleteIfExists(file);
+					
+					
+					Path thumbnail = Paths.get("C:\\upload\\" + attach.getUploadPath() + "\\s_" + 
+									attach.getUuid() + "_" + attach.getFileName());
+					
+					Files.delete(thumbnail);
+					
+					
+				}catch(Exception e) {
+					log.error("delete file error" + e.getMessage());
+				}
+			});
 		}
 }

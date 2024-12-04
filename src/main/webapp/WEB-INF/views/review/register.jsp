@@ -17,7 +17,11 @@
     
     <div class="mb-3 col-lg-5">
         <label for="formFileMultiple" class="form-label">상품 이미지 첨부</label>
-        <input class="form-control" type="file" id="formFileMultiple" name="r_image" multiple>
+        <input class="form-control" type="file" id="formFileMultiple" name="uploadFile" multiple>
+     	 <div class="uploadResult">
+					<ul>
+					</ul>
+				</div>      
     </div> 
 
 		 <!-- 버튼들 -->
@@ -31,3 +35,37 @@
     </div>
 
    <%@include file="../includes/footer.jsp"%>
+   
+   <script>
+   $(function(){
+		
+		const formObj = $('form');
+		
+		$('button[type="submit"]').click(function(e){
+			e.preventDefault();
+			
+			alert("회원에 가입되었습니다.\n로그인후 이용해주세요~");
+
+			// 첨부파일 정보는 <input type="hidden">으로 처리하고
+			// form 태그로 전송하는 부분
+			let str = '';
+			
+			$('.uploadResult ul li').each(function(i, obj){
+				const jobj = $(obj);
+				console.dir(jobj);  //JavaScript 객체 속성을 인터랙티브한 목록으로 표시
+				
+				str += '<input type="hidden" name="attachList['+ i +'].fileName" value="'+ jobj.data('filename') +'">';
+				str += '<input type="hidden" name="attachList['+ i +'].uuid" value="'+ jobj.data('uuid') +'">';
+				str += '<input type="hidden" name="attachList['+ i +'].uploadPath" value="'+ jobj.data('path') +'">';
+				str += '<input type="hidden" name="attachList['+ i +'].fileType" value="'+ jobj.data('type') +'">';
+			});
+			
+			formObj.append(str).submit();
+
+		});
+	});	
+   
+   
+   </script>
+   
+   <%@include file="../includes/file_register.jsp" %>

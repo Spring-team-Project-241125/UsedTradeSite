@@ -26,6 +26,6 @@ public class ProductVO {
 	
 	private String sellerId; // 판매자 ID 추가
 
-	private List<AttachVO> p_image;
+	private List<AttachVO> attachList;  //attachList
 	
 }

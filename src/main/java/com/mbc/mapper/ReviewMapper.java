@@ -27,4 +27,12 @@ public interface ReviewMapper {
 	
 	
 	public List<ReviewVO> getReviewListByUno(Long uno);
+	
+	
+	public void delete(String uuid);
+	
+
+
+
+	
 }

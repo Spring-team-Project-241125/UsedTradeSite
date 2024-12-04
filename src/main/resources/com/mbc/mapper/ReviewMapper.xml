@@ -4,39 +4,44 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.mbc.mapper.ReviewMapper">
-	
-	<insert id="register">
-		insert into Reviews (rno, pno, uno, r_content, r_img_path, r_img_name, r_img_o_name)
-		values (seq_rno.nextval, #{pno}, #{uno}, #{r_content},
-		 	#{r_img_path, jdbcType=VARCHAR}, 
-            #{r_img_name, jdbcType=VARCHAR}, 
-            #{r_img_o_name, jdbcType=VARCHAR} )
-	</insert>
+   
+   <insert id="register">
+   <selectKey keyProperty="rno" resultType="Long" order="BEFORE">
+         SELECT seq_rno.NEXTVAL FROM DUAL
+      </selectKey>
+      insert into Reviews (rno, pno, uno, r_content)
+      values (${rno}, #{pno}, #{uno}, #{r_content} )
+   </insert>
+   
+   
 
-	<select id="read" resultType="com.mbc.domain.ReviewVO">
-		SELECT r.rno, r.pno, r.uno, r.r_content, r.r_regdate, 
-       	p.p_title, u.id AS sellerId, buyer.id AS buyerId
-	FROM Reviews r
-	JOIN Products p ON r.pno = p.pno
-	LEFT JOIN Users u ON p.uno = u.uno
-	LEFT JOIN Users buyer ON r.uno = buyer.uno
-	where rno = #{rno}
-	</select>
-	
-	<delete id="delete">
-		delete from reviews where rno = #{rno}
-	</delete>
-	
-	<update id="update">
-		update reviews 
-		set r_content= #{r_content},
-		r_updatedate = sysdate 
-		where rno = #{rno}
-	</update>
-	
-	
-	
-	<sql id="criteria">
+   <select id="read" resultType="com.mbc.domain.ReviewVO">
+      SELECT r.rno, r.pno, r.uno, r.r_content, r.r_regdate, 
+          p.p_title, u.id AS sellerId, buyer.id AS buyerId
+   FROM Reviews r
+   JOIN Products p ON r.pno = p.pno
+   LEFT JOIN Users u ON p.uno = u.uno
+   LEFT JOIN Users buyer ON r.uno = buyer.uno
+   where rno = #{rno}
+   </select>
+   
+   <delete id="delete">
+      delete from reviews where rno = #{rno}
+   </delete>
+   
+   <update id="update">
+      update reviews 
+      set r_content= #{r_content},
+      r_updatedate = sysdate 
+      where rno = #{rno}
+   </update>
+   
+   
+   
+   
+   
+   
+<sql id="criteria">
   <trim prefix="(" suffix=")" prefixOverrides="OR">
     <foreach item="type" collection="typeArr" separator="OR">
       
@@ -58,7 +63,6 @@
       </if>
       
       <if test="type == 'W'.toString()">
-        -- Reviews 테이블에서 r_content를 대소문자 구분 없이 검색
         r.rno in (
           select r.rno
           from Reviews r
@@ -69,49 +73,42 @@
   </trim>
 </sql>
 
-<select id="getReviewListWithProductAndbuyerIdAndsellerId" resultType="com.mbc.domain.ReviewVO">
-  <![CDATA[
+ <select id="getReviewListWithProductAndbuyerIdAndsellerId" resultType="com.mbc.domain.ReviewVO">
   select r.rno, r.pno, r.uno, r.r_content, r.r_regdate,
          p.p_title, 
          buyer.id AS buyerId, 
-         u.id AS sellerId 
+         u.id AS sellerId
   from (
       select rno, pno, uno, r_content, r_regdate, rownum rn
       from (
           select r.rno, r.pno, r.uno, r.r_content, r.r_regdate
           from Reviews r
+          <where>
+            <include refid="criteria" />
+          </where>
           order by r.rno desc
       )
   ) r
   left join Products p ON r.pno = p.pno  
   left join Users u ON p.uno = u.uno  
-  left join Users buyer ON r.uno = buyer.uno  
-  ]]>
-  <where>
-    <include refid="criteria" />
-    <![CDATA[
-      AND r.rn between  (#{pagenum} - 1) * #{amount} + 1 and #{pagenum} * #{amount}
-  ]]>
-  </where>
+  left join Users buyer ON r.uno = buyer.uno
+  
+  <!-- 페이지네이션을 위한 rownum 범위 설정 -->
+  where r.rn between (#{pagenum} - 1) * #{amount} + 1 and #{pagenum} * #{amount}
 </select>
-
 
 
 
 
 <select id="getTotalCount" resultType="int">
-  	SELECT count(*) 
-  	FROM Reviews r
-  	<where>
-      	<include refid="criteria"></include>
-  	</where>
+     SELECT count(*) 
+     FROM Reviews r
+     <where>
+         <include refid="criteria"></include>
+     </where>
 </select>
 
-
-
-
-
-		  
+  
 <select id="getReviewListByUno" resultType="com.mbc.domain.ReviewVO">
    SELECT 
        r.rno, 
@@ -131,7 +128,9 @@
    WHERE r.uno = #{uno}
    ORDER BY r.r_regdate DESC;
 </select>
-		 
-		 
-		 
+       
+       
+       
+       
+       
 </mapper>
