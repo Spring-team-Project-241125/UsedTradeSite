@@ -49,12 +49,14 @@ public class ProductServiceImpl implements ProductService{
 	public void register(ProductVO product) {
 		mapper.insertSelectKey(product); // 상품 정보 등록
 
-	    if (product.getP_image() != null && !product.getP_image().isEmpty()) {
-	        for (AttachVO attach : product.getP_image()) {
-	            attach.setPno(product.getPno());
-	            attachmapper.insertPno(attach); // 상품 이미지 정보 등록
-	        }
-	    }
+		if(product.getAttachList() == null || product.getAttachList().size() <= 0) {
+			return;
+		}
+		
+		product.getAttachList().forEach(attach -> {
+			attach.setPno(product.getPno());
+			attachmapper.insertPno(attach);
+		});
 	}
 
 	@Override
@@ -65,18 +67,35 @@ public class ProductServiceImpl implements ProductService{
 		return mapper.read(pno);
 	}
 
+	@Transactional
 	@Override
 	public int modify(ProductVO Product) {
 
 		log.info("modify.......");
 		
-		return mapper.update(Product);
+		attachmapper.deleteAllPno(Product.getPno());
+		
+		int modifyResult = mapper.update(Product);
+		
+		if(modifyResult == 1 && Product.getAttachList() != null &&
+				Product.getAttachList().size() > 0) {
+			
+			Product.getAttachList().forEach(attach -> {
+				attach.setPno(Product.getPno());
+				attachmapper.insertPno(attach);
+			});
+		}
+		
+		return modifyResult;
 	}
 
+	@Transactional
 	@Override
 	public int remove(Long pno) {
 		
 		log.info("remove.......");
+		
+		attachmapper.deleteAllPno(pno);
 		
 		return mapper.delete(pno);
 	}
@@ -108,5 +127,11 @@ public class ProductServiceImpl implements ProductService{
 		 return mapper.getProductsByUno(uno);
 	}
 	
+	@Override
+	public List<AttachVO> getAttachList(Long pno) {
+		log.info("pno : " + pno);
+		
+		return attachmapper.findByPno(pno);
+	}
 
 }

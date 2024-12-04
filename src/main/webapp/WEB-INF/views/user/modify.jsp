@@ -139,7 +139,7 @@ $(function(){
 	
 	// 파일 업로드 유효성 검사
 	//const regex = new RegExp('(.*?)\.(exe|sh|zip|alz)$');
-	const regex = new RegExp('(.*?)\.(jpg|jpeg|png|gif)$');
+	const regex = new RegExp('(.*?)\.(jpg|jpeg|png|gif)$', 'i');
 	const maxSize = 5242880;  // 5MB
 	
 	function checkExtension(fileName, fileSize){

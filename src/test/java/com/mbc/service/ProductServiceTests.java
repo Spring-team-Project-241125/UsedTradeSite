@@ -56,7 +56,7 @@ public class ProductServiceTests {
 	    attachList.add(attach1);
 	    attachList.add(attach2);
 	    
-	    product.setP_image(attachList);  // 상품에 첨부파일 리스트 설정
+	    //product.setP_image(attachList);  // 상품에 첨부파일 리스트 설정
 	    
 	    // 상품 등록
 	    service.register(product);

@@ -13,10 +13,11 @@
         <form id="productForm" role="form" action="/product/register" method="post" enctype="multipart/form-data">
         <div class="mb-3 col-lg-5">
             <label for="formFileMultiple" class="form-label">상품 이미지 첨부</label>
-            <input class="form-control" type="file" id="formFileMultiple" name="p_image" multiple>
-        </div>
-        <div id="imagePreview" class="mb-3">
-            <!-- 업로드된 이미지 미리보기 -->
+            <input class="form-control" type="file" id="formFileMultiple" name="uploadFile" multiple>
+            <div class="uploadResult">
+					<ul>
+					</ul>
+				</div>
         </div>
     
     
@@ -52,42 +53,36 @@
 	
 	<%@include file="../includes/footer.jsp"%>
 	
-	
 	<script>
-	$(document).ready(function() {
-    $('#uploadBtn').on('click', function() {
-        var formData = new FormData();
-        var files = $('#formFileMultiple')[0].files;
+	$(function(){
+		
+		const formObj = $('form');
+		
+		$('button[type="submit"]').click(function(e){
+			e.preventDefault();
+			
+			alert("상품이 등록되었습니다.");
 
-        // 선택된 파일이 있을 경우에만 업로드
-        if (files.length > 0) {
-            // FormData에 파일 추가
-            for (var i = 0; i < files.length; i++) {
-                formData.append("p_image", files[i]);
-            }
+			// 첨부파일 정보는 <input type="hidden">으로 처리하고
+			// form 태그로 전송하는 부분
+			let str = '';
+			
+			$('.uploadResult ul li').each(function(i, obj){
+				const jobj = $(obj);
+				console.dir(jobj);  //JavaScript 객체 속성을 인터랙티브한 목록으로 표시
+				
+				str += '<input type="hidden" name="attachList['+ i +'].fileName" value="'+ jobj.data('filename') +'">';
+				str += '<input type="hidden" name="attachList['+ i +'].uuid" value="'+ jobj.data('uuid') +'">';
+				str += '<input type="hidden" name="attachList['+ i +'].uploadPath" value="'+ jobj.data('path') +'">';
+				str += '<input type="hidden" name="attachList['+ i +'].fileType" value="'+ jobj.data('type') +'">';
+			});
+			
+			formObj.append(str).submit();
 
-            $.ajax({
-                url: '/product/uploadImage',  // 서버에서 이미지를 처리할 URL
-                type: 'POST',
-                data: formData,
-                processData: false,  // FormData 사용시 false
-                contentType: false,  // FormData 사용시 false
-                success: function(response) {
-                    if (response.success) {
-                        // 성공적으로 업로드되면 이미지 미리보기
-                        var imgPreview = '<img src="' + response.imageUrl + '" alt="Uploaded Image" class="img-thumbnail" width="100">';
-                        $('#imagePreview').html(imgPreview);
-                    } else {
-                        alert('이미지 업로드 실패');
-                    }
-                },
-                error: function() {
-                    alert('서버 오류로 이미지 업로드 실패');
-                }
-            });
-        } else {
-            alert('파일을 선택해주세요');
-        }
-    });
-});
+		});
+	});		
+	
 	</script>
+	
+	
+<%@include file="../includes/file_register.jsp" %>

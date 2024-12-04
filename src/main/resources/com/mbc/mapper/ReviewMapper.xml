@@ -4,43 +4,43 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.mbc.mapper.ReviewMapper">
-	
-	<insert id="register">
-	<selectKey keyProperty="rno" resultType="Long" order="BEFORE">
-			SELECT seq_rno.NEXTVAL FROM DUAL
-		</selectKey>
-		insert into Reviews (rno, pno, uno, r_content)
-		values (${rno}, #{pno}, #{uno}, #{r_content} )
-	</insert>
-	
-	
+   
+   <insert id="register">
+   <selectKey keyProperty="rno" resultType="Long" order="BEFORE">
+         SELECT seq_rno.NEXTVAL FROM DUAL
+      </selectKey>
+      insert into Reviews (rno, pno, uno, r_content)
+      values (${rno}, #{pno}, #{uno}, #{r_content} )
+   </insert>
+   
+   
 
-	<select id="read" resultType="com.mbc.domain.ReviewVO">
-		SELECT r.rno, r.pno, r.uno, r.r_content, r.r_regdate, 
-       	p.p_title, u.id AS sellerId, buyer.id AS buyerId
-	FROM Reviews r
-	JOIN Products p ON r.pno = p.pno
-	LEFT JOIN Users u ON p.uno = u.uno
-	LEFT JOIN Users buyer ON r.uno = buyer.uno
-	where rno = #{rno}
-	</select>
-	
-	<delete id="delete">
-		delete from reviews where rno = #{rno}
-	</delete>
-	
-	<update id="update">
-		update reviews 
-		set r_content= #{r_content},
-		r_updatedate = sysdate 
-		where rno = #{rno}
-	</update>
-	
-	
-	
-	
-	
-	
+   <select id="read" resultType="com.mbc.domain.ReviewVO">
+      SELECT r.rno, r.pno, r.uno, r.r_content, r.r_regdate, 
+          p.p_title, u.id AS sellerId, buyer.id AS buyerId
+   FROM Reviews r
+   JOIN Products p ON r.pno = p.pno
+   LEFT JOIN Users u ON p.uno = u.uno
+   LEFT JOIN Users buyer ON r.uno = buyer.uno
+   where rno = #{rno}
+   </select>
+   
+   <delete id="delete">
+      delete from reviews where rno = #{rno}
+   </delete>
+   
+   <update id="update">
+      update reviews 
+      set r_content= #{r_content},
+      r_updatedate = sysdate 
+      where rno = #{rno}
+   </update>
+   
+   
+   
+   
+   
+   
 <sql id="criteria">
   <trim prefix="(" suffix=")" prefixOverrides="OR">
     <foreach item="type" collection="typeArr" separator="OR">
@@ -101,11 +101,11 @@
 
 
 <select id="getTotalCount" resultType="int">
-  	SELECT count(*) 
-  	FROM Reviews r
-  	<where>
-      	<include refid="criteria"></include>
-  	</where>
+     SELECT count(*) 
+     FROM Reviews r
+     <where>
+         <include refid="criteria"></include>
+     </where>
 </select>
 
   
@@ -128,9 +128,9 @@
    WHERE r.uno = #{uno}
    ORDER BY r.r_regdate DESC;
 </select>
-		 
-		 
-		 
-		 
-		 
+       
+       
+       
+       
+       
 </mapper>

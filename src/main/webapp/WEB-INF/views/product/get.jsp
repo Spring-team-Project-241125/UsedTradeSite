@@ -10,8 +10,10 @@
         
         <div class="row">
             <div class="col-lg-6">
-                <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?q=80&w=1353&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    alt="product" width="100%">
+                <div class="swiper mySwiper uploadResult">   	
+	                <ul class="swiper-wrapper"></ul>
+	                <div class="swiper-pagination"></div>
+            	</div>
             </div>
             <div class="col-lg-6">
                 <h3 class="pb-5"><c:out value="${product.p_title}" /></h3>
@@ -79,3 +81,54 @@
 	
 	<%@include file="../includes/footer.jsp"%>
 	
+<script>
+$(function(){
+	let pno = '<c:out value="${product.pno}" />';
+	
+	$.ajax({
+		url: '/product/getAttachList',
+		method: 'get',
+		data: {pno: pno},
+		dataType: 'json',
+		success: function(result){
+			console.log(result);
+			
+			let str = '';
+			
+			$(result).each(function(i, attach){
+				// image type
+				if(attach.fileType){
+					let fileCallPath = encodeURIComponent(attach.uploadPath + '/' 
+							+ attach.uuid + '_' + attach.fileName);
+					
+					str += '<li class="swiper-slide" data-path="'+ attach.uploadPath +'" data-uuid="'+ attach.uuid;
+					str += '" data-filename="'+ attach.fileName +'" data-type="'+ attach.fileType +'">';
+					str += '<img src="/display?fileName='+ fileCallPath +'">';
+					str += '</li>';
+				}else {										
+					str += '<li class="swiper-slide" data-path="'+ attach.uploadPath +'" data-uuid="'+ attach.uuid;
+					str += '" data-filename="'+ attach.fileName +'" data-type="'+ attach.fileType +'">';
+					str += '<span>'+ attach.fileName + '</span><br>';
+					str += '<img alt="profile" src="/resources/img/unknown.jpg" width="100px">';
+					str += '</li>';
+				}
+			});
+			$('.uploadResult ul').html(str);
+
+		}
+	});
+	
+});
+</script>
+
+ <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- Initialize Swiper -->
+  <script>
+    var swiper = new Swiper(".mySwiper", {
+      pagination: {
+        el: ".swiper-pagination",
+      },
+    });
+  </script>

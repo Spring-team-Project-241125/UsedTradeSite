@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mbc.domain.ProductVO;
+import com.mbc.domain.AttachVO;
 import com.mbc.domain.Criteria;
 
 public interface ProductService {
@@ -24,5 +25,7 @@ public interface ProductService {
 	public ProductVO getProductWithSellerId(Long pno);
 	
 	public List<ProductVO> getProductsByUno(Long uno);
+	
+	public List<AttachVO> getAttachList(Long pno);
 
 }

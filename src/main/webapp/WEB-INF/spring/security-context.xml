@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<security:http>
+	
+	<!-- 로그인 페이지 설정 -->
+        <security:form-login  login-page="/login"  />
+        
+	
+	<!-- 인증이 필요한 URL -->
+    <security:intercept-url pattern="/product/register" access="isAuthenticated()"/>
+    
+    <!-- CSRF 비활성화 -->
+        <security:csrf disabled="true"/>
+
+</security:http>
+
+<security:authentication-manager>
+
+	 <!-- 사용자 인증 관련 설정 -->
+
+</security:authentication-manager>
+
+</beans>

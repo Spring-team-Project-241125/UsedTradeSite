@@ -3,12 +3,17 @@ package com.mbc.controller;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.mbc.domain.ProductVO;
@@ -51,6 +57,8 @@ public class ProductController {
 	@GetMapping("/list")
 	public void list(Criteria cri, Model model) {
 		
+		cri.setAmount(12);
+		
 		log.info("list: " + cri);
 		model.addAttribute("productList", service.getList(cri));
 		
@@ -70,54 +78,16 @@ public class ProductController {
 
 	@PostMapping("/register")
 	public String register(@ModelAttribute ProductVO product, 
-	                       @RequestParam("p_image") MultipartFile[] files, 
 	                       RedirectAttributes rttr) {
 	    log.info("register: " + product);
 
 	    // 1~5 사이의 랜덤 정수 생성
 	    long uno = (int) (Math.random() * 5) + 1;
 	    product.setUno(uno);
-
-	    // 첨부파일 저장 처리
-	    List<AttachVO> attachList = new ArrayList<>();
-	    String uploadFolder = "C:\\upload";
-	    String uploadFolderPath = getFolder();
-
-	    File uploadPath = new File(uploadFolder, uploadFolderPath);
-	    if (!uploadPath.exists()) {
-	        uploadPath.mkdirs();
-	    }
-
-	    for (MultipartFile file : files) {
-	        if (!file.isEmpty()) {
-	            String originalFileName = file.getOriginalFilename();
-	            String uuid = UUID.randomUUID().toString();
-	            String saveName = uuid + "_" + originalFileName;
-
-	            File saveFile = new File(uploadPath, saveName);
-	            try {
-	                file.transferTo(saveFile);
-
-	                // attachVO 객체 생성
-	                AttachVO attach = new AttachVO();
-	                attach.setUuid(uuid);
-	                attach.setFileName(originalFileName);
-	                attach.setUploadPath(uploadFolderPath);
-	                attach.setFileType(checkImageType(saveFile));
-	                
-	              
-	                attach.setPno(product.getPno());  //  상품 번호(pno)를 설정
-
-	                // attachList에 추가
-	                attachList.add(attach);
-	            } catch (Exception e) {
-	                log.error("파일 저장 중 오류 발생: " + e.getMessage());
-	            }
-	        }
-	    }
-
-	    // ProductVO에 attachList 설정
-	    product.setP_image(attachList);  // attachVO 리스트를 설정
+	    
+	    if(product.getAttachList() != null) {
+	    	product.getAttachList().forEach(attach -> log.info(attach));
+		}
 
 	    // 서비스 로직 처리
 	    service.register(product);
@@ -170,7 +140,11 @@ public class ProductController {
 			RedirectAttributes rttr) {  //, String writer
 		
 		log.info("remove.......");
+		
+		List<AttachVO> attachList = service.getAttachList(pno);
+		
 		if(service.remove(pno) == 1) {
+			deleteFiles(attachList);
 			rttr.addFlashAttribute("result", "removesuccess");
 		}
 		rttr.addAttribute("pagenum", cri.getPagenum());
@@ -197,6 +171,44 @@ public class ProductController {
 		rttr.addAttribute("keyword", cri.getKeyword());
 		
 		return "redirect:/product/list";
+	}
+	
+	@GetMapping(value = "/getAttachList",
+			produces = {MediaType.APPLICATION_JSON_VALUE})
+	@ResponseBody
+	public ResponseEntity<List<AttachVO>> getAttachList(Long pno){
+		log.info("getAttachList" + pno);
+		
+		return new ResponseEntity<>(service.getAttachList(pno), HttpStatus.OK);
+	}
+	
+	private void deleteFiles(List<AttachVO> attachList) {
+		
+		if(attachList == null || attachList.size() == 0) {
+			return;
+		}
+		
+		log.info("delete attach files.....");
+		log.info(attachList);
+		
+		attachList.forEach(attach -> {
+			try {
+				Path file = Paths.get("C:\\upload\\" + attach.getUploadPath() + "\\" + 
+									attach.getUuid() + "_" + attach.getFileName());
+				
+				Files.deleteIfExists(file);
+				
+				
+				Path thumbnail = Paths.get("C:\\upload\\" + attach.getUploadPath() + "\\s_" + 
+								attach.getUuid() + "_" + attach.getFileName());
+				
+				Files.delete(thumbnail);
+				
+				
+			}catch(Exception e) {
+				log.error("delete file error" + e.getMessage());
+			}
+		});
 	}
 
 }

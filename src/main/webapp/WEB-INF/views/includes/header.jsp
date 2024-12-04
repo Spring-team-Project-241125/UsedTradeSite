@@ -17,11 +17,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
-
+	<!-- Link Swiper's CSS -->
+ 	 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
-        body {
-            font-family: "Noto Sans KR", sans-serif;
-        }
         
         a {
         	text-decoration: none;
@@ -48,6 +46,43 @@
 		.uploadResult ul li img {
 		   width: 100%;
 		}
+
+		
+		
+		
+    html,body {
+      position: relative;
+      height: 100%;
+    }
+
+    body {
+      font-family: "Noto Sans KR", sans-serif;
+      font-size: 14px;
+      color: #000;
+      margin: 0;
+      padding: 0;
+    }
+
+    .swiper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .swiper-slide img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
     </style>
 </head>
