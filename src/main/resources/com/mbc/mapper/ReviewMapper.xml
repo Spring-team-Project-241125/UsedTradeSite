@@ -110,24 +110,24 @@
 
   
 <select id="getReviewListByUno" resultType="com.mbc.domain.ReviewVO">
-   SELECT 
-       r.rno, 
-       r.pno, 
-       r.uno, 
-       r.r_content, 
-       r.r_img_path, 
-       r.r_img_name, 
-       r.r_img_o_name, 
-       r.r_regdate, 
-       r.r_updatedate, 
-       p.p_title AS productTitle,   -- 상품명
-       u.id AS sellerId             -- 판매자 ID
-   FROM Reviews r
-   LEFT JOIN Products p ON r.pno = p.pno
-   LEFT JOIN Users u ON r.uno = u.uno  -- 판매자 정보 가져오기
-   WHERE r.uno = #{uno}
-   ORDER BY r.r_regdate DESC;
-</select>
+	   SELECT 
+	       r.rno, 
+	       r.pno, 
+	       r.uno, 
+	       r.r_content, 
+	       r.r_img_path, 
+	       r.r_img_name, 
+	       r.r_img_o_name, 
+	       r.r_regdate, 
+	       r.r_updatedate, 
+	       p.p_title AS productTitle,   -- 상품명
+	       u.id AS sellerId             -- 판매자 ID
+	   FROM Reviews r
+	   LEFT JOIN Products p ON r.pno = p.pno
+	   LEFT JOIN Users u ON r.uno = u.uno  -- 판매자 정보 가져오기
+	   WHERE r.uno = #{uno}
+	   ORDER BY r.r_regdate DESC
+	</select>
        
        
        
