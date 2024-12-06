@@ -8,7 +8,7 @@
 <security:http>
 	
 	<!-- 로그인 페이지 설정 -->
-        <security:form-login  login-page="/login"  />
+    <security:form-login  login-page="/login"  />
         
 	
 	<!-- 인증이 필요한 URL -->
