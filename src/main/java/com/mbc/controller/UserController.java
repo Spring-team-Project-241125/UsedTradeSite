@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,8 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mbc.domain.UserVO;
-import com.mbc.mapper.AttachMapper;
 import com.mbc.domain.AttachVO;
+import com.mbc.service.ProductService;
+import com.mbc.service.ReviewService;
 import com.mbc.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -35,6 +35,8 @@ import lombok.extern.log4j.Log4j;
 public class UserController {
 	
 	private final UserService service;
+	private final ProductService productService;
+	private final ReviewService reviewService;
 	
 	@GetMapping("/store")
 	public void myStroe(@RequestParam("uno") Long uno, Model model) {
@@ -42,6 +44,8 @@ public class UserController {
 		
 		model.addAttribute("vo", service.get(uno));		
 		
+		model.addAttribute("productList", productService.getProductsByUno(uno));
+		model.addAttribute("reviewList", reviewService.getReviewListByUno(uno));	
 	}
 	
 	@GetMapping({"/detail", "/modify"})
