@@ -12,7 +12,7 @@
     
     <div class="mb-3">
         <label for="description">자세한 설명</label>
-        <textarea class="form-control" id="description" name="r_content" placeholder="자세한 설명을 입력해주세요" style="height: 100px;"></textarea>                
+        <textarea class="form-control" id="description" name="r_content" placeholder="자세한 설명을 입력해주세요" style="height: 100px;" required></textarea>                
     </div>
     
     <div class="mb-3 col-lg-5">
@@ -44,8 +44,15 @@
 		$('button[type="submit"]').click(function(e){
 			e.preventDefault();
 			
-			alert("회원에 가입되었습니다.\n로그인후 이용해주세요~");
-
+			
+			 // 리뷰 내용이 비어있는지 확인
+	        const reviewContent = $('#description').val().trim();
+	        if (reviewContent === "") {
+	            alert("리뷰 내용을 입력해주세요.");
+	            return; // 리뷰 내용이 없으면 폼 제출을 막음
+	        }
+			
+			
 			// 첨부파일 정보는 <input type="hidden">으로 처리하고
 			// form 태그로 전송하는 부분
 			let str = '';

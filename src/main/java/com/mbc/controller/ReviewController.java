@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -101,9 +103,20 @@ public class ReviewController {
 		public String modify(ReviewVO vo, Criteria cri ,RedirectAttributes rttr ) {
 			log.info("modify : "  + vo);
 			
-			if(service.modify(vo)== 1) {
-				rttr.addFlashAttribute("result", "success");
-			}
+			//로그인된 사용자 정보 가져오기
+//			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//			String loggedInUserId = user.getUsername();
+			
+//			ReviewVO review = service.get(vo.getRno());
+//			if (review != null && review.getBuyerId().equals(loggedInUserId)) {
+				//수정 처리
+				if(service.modify(vo)== 1) {
+					rttr.addFlashAttribute("result", "success");
+				}
+//			}else {
+//				rttr.addFlashAttribute("message", "수정 권한이 없습니다.");
+//			}
+			
 			return "redirect:/review/list";
 		}
 
@@ -116,22 +129,33 @@ public class ReviewController {
 		public String remove(Long rno, Criteria cri, RedirectAttributes rttr) {
 			log.info("remove : " + rno );
 			
-			List<AttachVO> attachList = service.getAttachList(rno);
+			//로그인된 사용자 정보 가져오기
+//			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//			String loggedInUserId = user.getUsername();
 			
-			if(service.remove(rno)==1) {
-				deleteFiles(attachList);
-				
-				rttr.addFlashAttribute("result", "success");
-			}
+			
+			// 리뷰 작성자 ID와 로그인된 사용자 ID 비교
+//			ReviewVO review = service.get(rno);
+//			if (review != null && review.getBuyerId().equals(loggedInUserId)) {
+				List<AttachVO> attachList = service.getAttachList(rno);
+					
+				//삭제처리
+				if(service.remove(rno) ==1) {
+					deleteFiles(attachList);
+					rttr.addFlashAttribute("result", "success");
+				}
+//			} else {
+//				rttr.addFlashAttribute("message", "삭제 권한이 없습니다.");
+//			}
 			return "redirect:/review/list";
 		}
 		
 		
 		@GetMapping({"/get", "/modify"})
 		public void get(Long rno, Criteria cri, Model model) {
-			
-			
 			log.info("/get");
+			
+			
 			model.addAttribute("review", service.get(rno));
 		}
 		

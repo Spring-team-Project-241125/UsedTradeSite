@@ -8,6 +8,14 @@
 <div class="container py-5">
     <h2 class="py-3">상품 수정</h2>
     
+      <!-- URL 파라미터로 전달된 메시지 출력 -->
+    <c:if test="${not empty param.message}">
+        <div class="alert alert-success" role="alert">
+            ${param.message}
+        </div>
+    </c:if>
+    
+    
     <form action="/product/modify" method="post">
         <!-- 상품 ID (숨겨진 필드로 전송) -->
         <input type="hidden" name="pno" value="${product.pno}" />
