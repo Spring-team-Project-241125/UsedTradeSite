@@ -22,6 +22,13 @@ public class UserServiceImpl implements UserService {
 	
 	private final AttachMapper attachMapper;
 	
+	// 사용자 인증
+	@Override
+    public UserVO authenticate(String id, String pwd) {
+        // DB에서 사용자 인증 정보 조회
+        return mapper.checkUser(id, pwd);  // 사용자가 존재하면 1 이상 반환
+    }
+	
 	@Override
 	public UserVO get(Long uno) {
 		log.info("get.....");

@@ -23,9 +23,11 @@
      <p>판매자: <c:out value="${product.sellerId}" /></p> 
     
                 <div class="text-end">
+                  <!-- 장바구니 버튼: 비로그인자 또는 작성자가 아닌 경우에만 -->
                     <button type="button" class="btn btn-warning mt-3 ">장바구니</button>
                     <button type="button" class="btn btn-danger mt-3 ">구매하기</button>
-                    
+                     
+                      <!-- 수정하기 및 삭제하기 버튼: 작성자인 경우에만 -->
                     <a href="/product/modify?pno=${product.pno}" class="btn btn-primary mt-3">   수정하기   </a>
                     <button type="button" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#deleteModal">삭제하기</button>
                 </div>        

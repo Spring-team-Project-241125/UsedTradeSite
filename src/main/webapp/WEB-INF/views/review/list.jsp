@@ -131,7 +131,7 @@
  
                 <!-- 검색 조건 시작 -->
                 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 d-flex justify-content-center">
         <form action="/review/list" method="get" id="searchForm">
             <select name="type">
                 <option value="" ${pageMaker.cri.type == null ? 'selected' : ''}>--</option>

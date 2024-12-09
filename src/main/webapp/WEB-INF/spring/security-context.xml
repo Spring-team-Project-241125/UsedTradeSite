@@ -8,16 +8,15 @@
 <security:http>
 	
 	<!-- 로그인 페이지 설정 -->
-        <security:form-login  login-page="/login"  />
+        <security:form-login />
         
 	
 	<!-- 인증이 필요한 URL -->
-    <security:intercept-url pattern="/product/register" access="isAuthenticated()"/>
     
     <!-- CSRF 비활성화 -->
         <security:csrf disabled="true"/>
-
-</security:http>
+        
+    </security:http>
 
 <security:authentication-manager>
 

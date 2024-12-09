@@ -30,17 +30,17 @@
 <%@include file="includes/footer.jsp" %>
 
 <script>
-	$(function(){
-		$('#loginBtn').click(function(e){
-			e.preventDefault();
-			
-			if($('#id').val() == ''){
-				alert('아이디를 입력하세요.');
-			}else if($('#pwd').val() == ''){
-				alert('비밀번호를 입력하세요.');
-			}else {
-				$('form').submit();
-			}
-		});		
-	});
+   $(function(){
+      $('#loginBtn').click(function(e){
+         e.preventDefault();
+         
+         if($('#id').val() == ''){
+            alert('아이디를 입력하세요.');
+         }else if($('#pwd').val() == ''){
+            alert('비밀번호를 입력하세요.');
+         }else {
+            $('form').submit();
+         }
+      });      
+   });
 </script>

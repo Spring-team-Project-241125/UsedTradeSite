@@ -28,4 +28,9 @@
 	<delete id="delete">
 		delete from users where uno=#{uno}
 	</delete>
+	
+	<select id="checkUser" resultType="com.mbc.domain.UserVO">
+        SELECT * FROM Users WHERE id = #{id} AND pwd = #{pwd}
+    </select>
+    
 </mapper>

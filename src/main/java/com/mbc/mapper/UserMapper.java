@@ -19,4 +19,7 @@ public interface UserMapper {
 	// 회원탈퇴
 	public int delete(Long uno);
 	
+	 // 사용자 인증 체크
+    public UserVO checkUser(String id, String pwd);  // id와 pwd가 일치하는 사용자 존재 여부 확인
+	
 }
