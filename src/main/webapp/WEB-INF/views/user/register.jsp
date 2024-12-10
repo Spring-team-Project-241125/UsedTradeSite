@@ -11,7 +11,7 @@
         <h2 class="py-3">회원 가입</h2>
 
         <form action="/user/register" method="post" >
-        
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             <div class="mb-3 col-lg-5">
                 <label for="profile" class="form-label">프로필 사진</label>
                 <input class="form-control" type="file" id="profile" name="uploadFile">
@@ -41,7 +41,7 @@
     </div>
     
     <!-- modal start -->
-	<div id="registerModal" class="modal fade" tabindex="-1" aria-hidden="true">
+	<!-- <div id="registerModal" class="modal fade" tabindex="-1" aria-hidden="true">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -55,7 +55,7 @@
 	      </div>
 	    </div>
 	  </div>
-	</div>
+	</div> -->
 	<!-- modal end -->
     
 
@@ -90,6 +90,30 @@
 		
 		$('button[type="submit"]').click(function(e){
 			e.preventDefault();
+			
+			// 필수 입력값 체크
+            const userId = $('#userId').val();
+            const userPwd = $('#userPwd').val();
+            const phone = $('#phone').val();
+            const uploadFile = $('#profile').val();
+            
+            // 필수 입력값 확인
+            if (!userId) {
+                alert("아이디를 입력해주세요.");
+                return; // 아이디가 없으면 폼 제출을 막는다
+            }
+            if (!userPwd) {
+                alert("비밀번호를 입력해주세요.");
+                return; // 비밀번호가 없으면 폼 제출을 막는다
+            }
+            if (!phone) {
+                alert("전화번호를 입력해주세요.");
+                return; // 전화번호가 없으면 폼 제출을 막는다
+            }
+            if (!uploadFile) {
+                alert("프로필 사진을 첨부해주세요.");
+                return; // 첨부파일이 없으면 폼 제출을 막는다
+            }
 			
 			alert("회원에 가입되었습니다.\n로그인후 이용해주세요~");
 

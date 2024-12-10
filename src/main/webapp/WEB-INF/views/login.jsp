@@ -9,20 +9,24 @@
 
     <div class="container py-5 col-lg-4">
         <h2 class="py-3 text-center">로그인</h2>
+        <h2><c:out value="${error }"/></h2>
+		<h2><c:out value="${logout }"/></h2>
 
-        <form action="/product/list" method="get">
+        <form method="post" action="/login" >
             <div class="mb-3">   
                 <label for="userId" class="form-label">아이디</label>
-                <input type="text" class="form-control" id="id" placeholder="아이디를 입력해주세요">
+                <input type="text" name='username' class="form-control" id="id" placeholder="아이디를 입력해주세요">
             </div>  
             <div class="mb-3"> 
                 <label for="userPwd" class="form-label">비밀번호</label>
-                <input type="password" class="form-control" id="pwd" placeholder="비밀번호를 입력해주세요">
+                <input type="password" name='password' class="form-control" id="pwd" placeholder="비밀번호를 입력해주세요">
             </div>
 
             <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary mt-3" id="loginBtn">로그인</button>
             </div>  
+            <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
+            
         </form>
 
     </div>

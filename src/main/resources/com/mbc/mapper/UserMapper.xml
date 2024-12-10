@@ -4,10 +4,41 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mbc.mapper.UserMapper">
 
-	<select id="read" resultType="com.mbc.domain.UserVO">
+	<select id="readByUno" resultType="com.mbc.domain.UserVO">
 		select uno, id, pwd, phone, u_regdate
     	from users where uno=#{uno}
 	</select>
+
+	<resultMap type="com.mbc.domain.UserVO" id="userMap">
+		<id property="uno" column="uno"/>
+		
+		<result property="uno" column="uno"/>
+		<result property="id" column="id"/>
+		<result property="pwd" column="pwd"/>
+		<result property="u_regdate" column="u_regdate"/>
+		<result property="phone" column="phone"/>
+		
+		<collection property="authList" resultMap="authMap">
+		</collection>
+		
+	</resultMap>
+	
+		
+	
+	<resultMap type="com.mbc.domain.AuthVO" id="authMap">
+		<result property="uno" column="uno"/>
+		<result property="auth" column="auth"/>
+	</resultMap>
+	
+	<select id="readById" resultMap="userMap">
+    SELECT
+        u.uno, u.id, u.pwd, u.u_regdate, u.phone, u.enabled, 
+        auth.auth
+    FROM
+        users u
+        LEFT OUTER JOIN users_auth auth ON u.uno = auth.uno
+    WHERE u.id = #{userName}
+</select>
 	
 	<insert id="create">
 		<selectKey keyProperty="uno" resultType="Long" order="BEFORE">
@@ -32,5 +63,11 @@
 	<select id="checkUser" resultType="com.mbc.domain.UserVO">
         SELECT * FROM Users WHERE id = #{id} AND pwd = #{pwd}
     </select>
+    
+    <select id="findUnoByUsername" resultType="long">
+ 	    SELECT uno 
+  	    FROM users
+  	    WHERE id = #{username}
+	</select>
     
 </mapper>

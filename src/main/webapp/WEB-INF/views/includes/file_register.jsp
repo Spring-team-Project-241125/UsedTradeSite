@@ -29,6 +29,9 @@
 			const formData = new FormData();
 			const inputFile = $('input[name="uploadFile"]');
 			let files = inputFile[0].files;
+			
+			// CSRF 토큰 추가
+            formData.append('${_csrf.parameterName}', '${_csrf.token}');
 
 			for(let i=0; i<files.length; i++){
 				console.log(i)
@@ -97,21 +100,29 @@
 		}
 		
 		// 첨부파일 삭제
-		$('.uploadResult').on('click','button', function(e){
-			console.log('delete file');
-			
-			let targetFile = $(this).data('file');
-			let type = $(this).data('type');
-			let targetLi = $(this).closest('li');
-			
-			$.ajax({
-				url: '/deleteFile',
-				type: 'post',
-				data: {fileName: targetFile, type: type},
-				dataType: 'text',
-				success: function(result){
-					alert(result);
-					targetLi.remove();
+		$('.uploadResult').on('click', 'button', function(e){
+    console.log('delete file');
+    
+    let targetFile = $(this).data('file');
+    let type = $(this).data('type');
+    let targetLi = $(this).closest('li');
+    
+    // CSRF 토큰 추가
+    const csrfParameterName = '${_csrf.parameterName}';
+    const csrfToken = '${_csrf.token}';
+
+    $.ajax({
+        url: '/deleteFile',
+        type: 'post',
+        data: {
+            fileName: targetFile,
+            type: type,
+            [csrfParameterName]: csrfToken // CSRF 토큰 추가
+        },
+        dataType: 'text',
+        success: function(result){
+            alert(result);
+            targetLi.remove();
 				}
 			});
 		});

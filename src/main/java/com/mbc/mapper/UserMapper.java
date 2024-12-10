@@ -5,7 +5,10 @@ import com.mbc.domain.UserVO;
 public interface UserMapper {
 	
 	// 나의 회원정보
-	public UserVO read(Long uno);
+	
+	public UserVO readByUno(Long uno);
+	
+	public UserVO readById(String id);
 	
 	// 회원가입(등록)
 	public void create(UserVO vo);
@@ -21,5 +24,7 @@ public interface UserMapper {
 	
 	 // 사용자 인증 체크
     public UserVO checkUser(String id, String pwd);  // id와 pwd가 일치하는 사용자 존재 여부 확인
+    
+    public Long findUnoByUsername(String username); // username으로 uno 조회
 	
 }

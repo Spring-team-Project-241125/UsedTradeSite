@@ -43,14 +43,14 @@ public class ProductServiceTests {
 	    attach1.setUuid("uuid1");
 	    attach1.setUploadPath("/upload");
 	    attach1.setFileName("file1.jpg");
-	    attach1.setFileType(true);  // fileType 예시 (이미지로 설정)
+	    attach1.setFileType("I");  // fileType 예시 (이미지로 설정)
 	    attach1.setPno(product.getPno());  // 실제 product.getPno()에 맞게 설정
 	    
 	    AttachVO attach2 = new AttachVO();
 	    attach2.setUuid("uuid2");
 	    attach2.setUploadPath("/upload");
 	    attach2.setFileName("file2.jpg");
-	    attach2.setFileType(true);  // fileType 예시 (이미지로 설정)
+	    attach2.setFileType("I");  // fileType 예시 (이미지로 설정)
 	    attach2.setPno(product.getPno());  // 실제 product.getPno()에 맞게 설정
 	    
 	    attachList.add(attach1);

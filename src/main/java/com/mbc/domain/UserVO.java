@@ -13,7 +13,9 @@ public class UserVO {
 	private String pwd;
 	private Date u_regdate;
 	private String phone;
+	private String enabled;
 	
 	private List<AttachVO> attachList;
+	private List<AuthVO> authList;
 	
 }

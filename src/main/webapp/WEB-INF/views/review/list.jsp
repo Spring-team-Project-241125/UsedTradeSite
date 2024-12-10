@@ -5,7 +5,12 @@
 
 <%@ include file="../includes/header.jsp"%>
 
-
+<!-- 메시지가 있을 경우 alert로 표시 -->
+<c:if test="${not empty removeresult}">
+    <script type="text/javascript">
+        alert("리뷰가 삭제되었습니다.");
+    </script>
+</c:if>
 
 
 <div class="container py-5">

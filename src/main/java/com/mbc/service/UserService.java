@@ -24,4 +24,6 @@ public interface UserService {
 	
 	public UserVO authenticate(String id, String pwd);
 	
+	public Long getUnoByUsername(String username);
+	
 }
