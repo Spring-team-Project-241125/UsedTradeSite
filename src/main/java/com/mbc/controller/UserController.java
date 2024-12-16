@@ -3,13 +3,16 @@ package com.mbc.controller;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,18 +37,23 @@ import lombok.extern.log4j.Log4j;
 @RequiredArgsConstructor
 public class UserController {
 	
+	@Autowired
+	private PasswordEncoder pwencoder;
+	
 	private final UserService service;
 	private final ProductService productService;
 	private final ReviewService reviewService;
 	
 	@GetMapping("/store")
-	public void myStroe(@RequestParam("uno") Long uno, Model model) {
-		log.info("my store...");
-		
-		model.addAttribute("vo", service.get(uno));		
-		
-		model.addAttribute("productList", productService.getProductsByUno(uno));
-		model.addAttribute("reviewList", reviewService.getReviewListByUno(uno));	
+	public void myStore(Model model, Principal principal) {
+	    log.info("my store...");
+
+	    String username = principal.getName();
+	    Long uno = service.getUnoByUsername(username);
+
+	    model.addAttribute("vo", service.get(uno));
+	    model.addAttribute("productList", productService.getProductsByUno(uno));
+	    model.addAttribute("reviewList", reviewService.getReviewListByUno(uno));
 	}
 	
 	@GetMapping({"/detail", "/modify"})
@@ -59,17 +67,25 @@ public class UserController {
 	public void register() {}
 	
 	@PostMapping("/register")
-	 public String register(UserVO vo) {
-		log.info("register : " + vo);
-		
-		if(vo.getAttachList() != null) {
-			vo.getAttachList().forEach(attach -> log.info(attach));
-		}
-		
-		service.register(vo);
-		log.info("register after : " + vo);
-		
-		return "redirect:/login";
+	public String register(UserVO vo) {
+	    log.info("register : " + vo);
+
+	    // 비밀번호 암호화
+	    String rawPassword = vo.getPwd();  // 원래 비밀번호
+	    String encodedPassword = pwencoder.encode(rawPassword);  // 비밀번호 암호화
+	    vo.setPwd(encodedPassword);  // 암호화된 비밀번호를 VO에 설정
+
+	    // 첨부 파일이 있을 경우 처리
+	    if (vo.getAttachList() != null) {
+	        vo.getAttachList().forEach(attach -> log.info(attach));
+	    }
+
+	    // 서비스에서 사용자 등록 처리
+	    service.register(vo);
+
+	    log.info("register after : " + vo);
+
+	    return "redirect:/customLogin";
 	}
 	
 	@GetMapping(value = "/check-id", produces = {MediaType.APPLICATION_JSON_VALUE})

@@ -5,15 +5,19 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,10 +29,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.mbc.domain.ProductVO;
+import com.mbc.domain.UserVO;
 import com.mbc.domain.AttachVO;
 import com.mbc.domain.Criteria;
 import com.mbc.domain.PageDTO;
 import com.mbc.service.ProductService;
+import com.mbc.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -46,6 +52,8 @@ public class ProductController {
 	
 	private final ProductService service;
 	
+	private final UserService userservice;
+	
 //	@GetMapping("/list")
 //	public void list(Model model) {
 //		
@@ -55,15 +63,23 @@ public class ProductController {
 //	}
 	
 	@GetMapping("/list")
-	public void list(Criteria cri, Model model) {
+	public void list(Criteria cri, Model model, Principal principal) {
 		
 		cri.setAmount(12);
 		
 		log.info("list: " + cri);
+		
+		// 로그인한 사용자 정보 추가
+	    if (principal != null) {
+	        String username = principal.getName(); // 로그인한 사용자 이름
+	        model.addAttribute("username", username); // 모델에 추가
+	    }
+	    
+	    // 상품 목록 추가
 		model.addAttribute("productList", service.getList(cri));
 		
+		// 전체 페이지 수
 		int total = service.getTotal(cri);
-		
 		log.info("total: " + total);
 		
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
@@ -75,19 +91,24 @@ public class ProductController {
 		
 	}
 	
-
+	@Secured({"ROLE_USER"})
 	@PostMapping("/register")
-	public String register(@ModelAttribute ProductVO product, 
-	                       RedirectAttributes rttr) {
+	public String register(@ModelAttribute ProductVO product, RedirectAttributes rttr, Principal principal) {
 	    log.info("register: " + product);
 
-	    // 1~5 사이의 랜덤 정수 생성
-	    long uno = (int) (Math.random() * 5) + 1;
+	    // 로그인한 사용자 이름을 가져옵니다
+	    String username = principal.getName();
+
+	    // 해당 사용자의 uno 값 조회
+	    Long uno = userservice.getUnoByUsername(username);
+
+	    // 사용자 uno 값으로 설정
 	    product.setUno(uno);
-	    
-	    if(product.getAttachList() != null) {
-	    	product.getAttachList().forEach(attach -> log.info(attach));
-		}
+
+	    // 첨부파일 리스트 로깅
+	    if (product.getAttachList() != null) {
+	        product.getAttachList().forEach(attach -> log.info(attach));
+	    }
 
 	    // 서비스 로직 처리
 	    service.register(product);
@@ -120,19 +141,33 @@ public class ProductController {
 	    return false;  // 이미지가 아닌 파일은 'O' 반환
 	}
 	
-	@GetMapping({"/get","/modify"})
+	@GetMapping({"/get", "/modify"})
 	public void get(@RequestParam("pno") Long pno, @ModelAttribute("cri") Criteria cri, 
-			Model model) {
-		
-		log.info("/get or modify");
-		
-		ProductVO product = service.getProductWithSellerId(pno);
-		
-		// 판매자 정보 조회 (상품의 uno를 기준으로 사용자 ID 조회)
-      //  String sellerId = userService.getUserIdByUno(product.getUno());
-      //  product.setSellerId(sellerId);  // 조회한 판매자 ID를 ProductVO에 세팅
-		
-		model.addAttribute("product", product);
+	                Model model, Principal principal) {
+	    log.info("/get or modify");
+
+	    // 상품 정보 가져오기
+	    ProductVO product = service.getProductWithSellerId(pno);
+
+	    // 판매자 정보 조회
+	    String sellerId = null;
+	    if (product.getUno() != null) {
+	        UserVO seller = userservice.get(product.getUno()); // `uno`로 사용자 정보 가져오기
+	        sellerId = (seller != null) ? seller.getId() : null; // ID 추출
+	    }
+	    product.setSellerId(sellerId); // 조회한 판매자 ID를 ProductVO에 세팅
+
+	    model.addAttribute("product", product);
+
+	    // 로그인 여부 및 작성자 여부 확인
+	    boolean isWriter = false;
+	    if (principal != null) { // 로그인된 사용자라면
+	        String username = principal.getName(); // 로그인된 사용자 ID
+	        Long userId = userservice.getUnoByUsername(username); // 사용자 ID 가져오기
+	        isWriter = product.getUno().equals(userId); // 작성자인지 확인
+	    }
+
+	    model.addAttribute("isWriter", isWriter); // 작성자 여부 전달
 	}
 	
 	@PostMapping("/remove")

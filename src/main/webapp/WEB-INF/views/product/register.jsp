@@ -11,6 +11,7 @@
     
     
         <form id="productForm" role="form" action="/product/register" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         <div class="mb-3 col-lg-5">
             <label for="formFileMultiple" class="form-label">상품 이미지 첨부</label>
             <input class="form-control" type="file" id="formFileMultiple" name="uploadFile" multiple>
@@ -46,7 +47,7 @@
         <textarea class="form-control" id="description" name="p_content" placeholder="자세한 설명을 입력해주세요" style="height: 100px;"></textarea>                
     </div>
     
-    <button type="submit" class="btn btn-primary mt-3">상품등록</button>
+    <button type="submit" id="submitBtn" class="btn btn-primary mt-3">상품등록</button>
 </form>
     
     </div>
@@ -58,7 +59,7 @@
 		
 		const formObj = $('form');
 		
-		$('button[type="submit"]').click(function(e){
+		 $('#submitBtn').click(function(e){
 			e.preventDefault();
 			
 			alert("상품이 등록되었습니다.");
@@ -83,6 +84,17 @@
 	});		
 	
 	</script>
+	
+	<script>
+document.getElementById("price").addEventListener("change", function() {
+    let value = parseInt(this.value); // 입력된 값을 정수로 변환
+
+    if (!isNaN(value)) {
+        // 1000의 배수로 반올림 (버림하려면 Math.floor 사용)
+        this.value = Math.round(value / 1000) * 1000;
+    }
+});
+</script>
 	
 	
 <%@include file="../includes/file_register.jsp" %>

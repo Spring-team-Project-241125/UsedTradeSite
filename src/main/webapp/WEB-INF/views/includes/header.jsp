@@ -93,7 +93,7 @@
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/">아나바다</a>
+                <a class="navbar-brand" href="/product/list">아나바다</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -108,6 +108,14 @@
                             <a class="nav-link" href="/review/list">리뷰</a>
                         </li>
                     </ul>
+                    
+                    <!-- 중앙에 로그인된 사용자 이름 표시 -->
+                <div class="navbar-nav mx-auto">
+                    <sec:authorize access="isAuthenticated()">
+                        <p class="nav-link mb-0">${username} 님, 반갑습니다!</p>
+                    </sec:authorize>
+                </div>
+                    
                     <div class="d-flex">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         
@@ -115,9 +123,12 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/user/store">내상점</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/logout">로그아웃</a>
-                            </li>
+                            <form action="/customLogout" method="post" style="display: inline; margin-top: 8px;">
+   							 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+    							<button type="submit" class="btn btn-link nav-link" style="padding: 0; border: none; background: none;">
+       										 로그아웃
+   					 			</button>
+							</form>
                         </sec:authorize>  
                           
                         <sec:authorize access="isAnonymous()">
@@ -126,7 +137,7 @@
                                 <a class="nav-link" href="/user/register">회원가입</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/login">로그인</a>
+                                <a class="nav-link" href="/customLogin">로그인</a>
                             </li>
                         </sec:authorize>
                         </ul>

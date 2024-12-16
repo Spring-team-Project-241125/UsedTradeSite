@@ -17,6 +17,7 @@
     
     
     <form action="/product/modify" method="post">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         <!-- 상품 ID (숨겨진 필드로 전송) -->
         <input type="hidden" name="pno" value="${product.pno}" />
         
