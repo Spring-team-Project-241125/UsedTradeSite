@@ -108,6 +108,14 @@
                             <a class="nav-link" href="/review/list">리뷰</a>
                         </li>
                     </ul>
+                    
+                    <!-- 중앙에 로그인된 사용자 이름 표시 -->
+                <div class="navbar-nav mx-auto">
+                    <sec:authorize access="isAuthenticated()">
+                        <p class="nav-link mb-0">${username} 님, 반갑습니다!</p>
+                    </sec:authorize>
+                </div>
+                    
                     <div class="d-flex">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         

@@ -63,15 +63,23 @@ public class ProductController {
 //	}
 	
 	@GetMapping("/list")
-	public void list(Criteria cri, Model model) {
+	public void list(Criteria cri, Model model, Principal principal) {
 		
 		cri.setAmount(12);
 		
 		log.info("list: " + cri);
+		
+		// 로그인한 사용자 정보 추가
+	    if (principal != null) {
+	        String username = principal.getName(); // 로그인한 사용자 이름
+	        model.addAttribute("username", username); // 모델에 추가
+	    }
+	    
+	    // 상품 목록 추가
 		model.addAttribute("productList", service.getList(cri));
 		
+		// 전체 페이지 수
 		int total = service.getTotal(cri);
-		
 		log.info("total: " + total);
 		
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
