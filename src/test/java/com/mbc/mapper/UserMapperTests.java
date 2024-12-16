@@ -20,9 +20,12 @@ public class UserMapperTests {
 	
 	@Test
 	public void testRead() {
-		UserVO vo = mapper.read(2L);
 		
-		log.info(vo);
+		UserVO vo = mapper.readById("user01");
+		
+		log.info("vo정보: " + vo);
+		
+		vo.getAuthList().forEach(authVO -> log.info("authVO 정보: " + authVO));
 	}
 	
 	@Test

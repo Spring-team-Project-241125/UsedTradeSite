@@ -92,7 +92,7 @@ public class UploadController {
 				multipartFile.transferTo(saveFile);  // 파일 저장
 				
 				if(checkImageType(saveFile)) {					
-					attachVO.setFileType(true);  // image 속성 추가
+					attachVO.setFileType("I");  // image 속성 추가
 					
 					// 썸네일 경로 설정
 					FileOutputStream thumbnail = new FileOutputStream(new File(

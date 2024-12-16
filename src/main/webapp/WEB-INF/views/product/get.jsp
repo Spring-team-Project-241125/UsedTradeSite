@@ -23,12 +23,18 @@
      <p>판매자: <c:out value="${product.sellerId}" /></p> 
     
                 <div class="text-end">
-                    <button type="button" class="btn btn-warning mt-3 ">장바구니</button>
-                    <button type="button" class="btn btn-danger mt-3 ">구매하기</button>
-                    
-                    <a href="/product/modify?pno=${product.pno}" class="btn btn-primary mt-3">   수정하기   </a>
-                    <button type="button" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#deleteModal">삭제하기</button>
-                </div>        
+  						  <!-- 비로그인자 또는 작성자가 아닌 경우 -->
+  					<c:if test="${!isWriter}">
+       					<button type="button" class="btn btn-warning mt-3">장바구니</button>
+      					<button type="button" class="btn btn-danger mt-3">구매하기</button>
+   				 	</c:if>
+
+  						  <!-- 작성자인 경우 -->
+   				 	<c:if test="${isWriter}">
+    			    	<a href="/product/modify?pno=${product.pno}" class="btn btn-primary mt-3">수정하기</a>
+    				    <button type="button" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#deleteModal">삭제하기</button>
+   				 	</c:if>
+				</div>        
                 
                 <!-- 삭제 확인 모달 시작 -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -45,6 +51,7 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
                 <!-- 삭제를 위한 폼 -->
                 <form action="/product/remove" method="POST" id="deleteForm">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                     <input type="hidden" name="pno" value="${product.pno}">
                     <button type="submit" class="btn btn-danger">예</button>
                 </form>

@@ -22,4 +22,8 @@ public interface UserService {
 	
 	public List<AttachVO> getAttachList(Long uno);
 	
+	public UserVO authenticate(String id, String pwd);
+	
+	public Long getUnoByUsername(String username);
+	
 }

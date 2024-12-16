@@ -9,6 +9,7 @@
         <h2 class="py-3">리뷰 등록</h2>
     
         <form role="form" action="/review/register" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
     
     <div class="mb-3">
         <label for="description">자세한 설명</label>
@@ -26,7 +27,7 @@
 
 		 <!-- 버튼들 -->
         <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-primary mt-3">등록완료</button>
+            <button type="submit" id="submitBtn" class="btn btn-primary mt-3">등록완료</button>
             <button type="button" class="btn btn-secondary mt-3" onclick="window.location.href='/review/list';">등록취소</button>
         </div>
     
@@ -41,7 +42,7 @@
 		
 		const formObj = $('form');
 		
-		$('button[type="submit"]').click(function(e){
+		$('#submitBtn').click(function(e){
 			e.preventDefault();
 			
 			

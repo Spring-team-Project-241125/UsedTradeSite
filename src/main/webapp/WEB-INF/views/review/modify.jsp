@@ -10,6 +10,7 @@
     
     <!-- 리뷰 수정 폼 -->
     <form action="/review/modify" method="post">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         <!-- 리뷰 ID (숨겨진 필드로 전송) -->
         <input type="hidden" name="rno" value="${review.rno}" />
         	 <div class="mb-3 col-lg-5">

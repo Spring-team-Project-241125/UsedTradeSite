@@ -43,14 +43,16 @@
         
     </form>
 	
-	
-		<a href="/review/modify?rno=${review.rno}" class="btn btn-primary mt-3">수정</a>
-
 		<button data-oper='list' class="btn btn-primary mt-3"
         onclick="location.href='/review/list'">목록</button>
-
 	
+			<!-- 작성자인 경우 -->
+   				 	<c:if test="${isWriter}">
+		<a href="/review/modify?rno=${review.rno}" class="btn btn-primary mt-3">수정</a>
+		
+		
 		<button type="button" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#deleteModal">삭제</button>
+		</c:if>
 		
 		<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -64,6 +66,7 @@
             </div>
             <div class="modal-footer">
                 <form action="/review/remove" method="POST" id="deleteForm">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                     <input type="hidden" name="rno" value="${review.rno}">
                     <button type="submit" class="btn btn-danger">예</button>
                 <!-- 삭제를 위한 폼 -->

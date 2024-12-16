@@ -8,9 +8,9 @@ import lombok.extern.log4j.Log4j;
 @Controller
 @Log4j
 public class LoginController {
-	
-	@GetMapping("/login")
-	public void login() {
-		
-	}
+   
+   @GetMapping("/login")
+   public void login() {
+      
+   }
 }

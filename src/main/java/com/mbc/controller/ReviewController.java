@@ -3,6 +3,7 @@ package com.mbc.controller;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,7 @@ import com.mbc.domain.Criteria;
 import com.mbc.domain.PageDTO;
 import com.mbc.domain.ReviewVO;
 import com.mbc.service.ReviewService;
+import com.mbc.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -40,6 +42,8 @@ public class ReviewController {
 
 	
 		private final ReviewService service;
+		
+		private final UserService userservice;
 		
 		//리뷰 리스트
 		@GetMapping("/list")
@@ -72,30 +76,32 @@ public class ReviewController {
 		
 		// 리뷰 등록
 		@PostMapping("/register")
-		public String register(@ModelAttribute ReviewVO vo, RedirectAttributes rttr) {
-			
-			
-			// 1~5 사이의 랜덤 정수 생성
-		       long uno = (int) (Math.random() * 5) + 1;
-		       vo.setUno(uno); // 하드코딩된 uno 설정
-		       
-		    // 1~5 사이의 랜덤 정수 생성
-		       long pno = (int) (Math.random() * 5) + 1;
-		       vo.setPno(pno); // 하드코딩된 uno 설정
+		public String register(@ModelAttribute ReviewVO vo, RedirectAttributes rttr, Principal principal) {
+		    // 로그인한 사용자 이름을 가져옵니다
+		    String username = principal.getName();
 
-		       if(vo.getAttachList() != null) {
-					vo.getAttachList().forEach(attach -> log.info(attach));
-				}
-		       
-		       
-		       log.info("register:========== " + vo);
-		       
-		       service.register(vo);
-		       
-		       rttr.addFlashAttribute("message", "등록되었습니다.");
-			rttr.addFlashAttribute("result", vo.getRno());
-			
-			return "redirect:/review/list";
+		    // 해당 사용자의 uno 값 조회
+		    Long uno = userservice.getUnoByUsername(username);
+
+		    // 사용자 uno 값을 ReviewVO에 설정
+		    vo.setUno(uno);
+
+		    // pno는 랜덤으로 설정 (기존 방식 유지)
+		    long pno = (int) (Math.random() * 5) + 1;
+		    vo.setPno(pno);
+
+		    if (vo.getAttachList() != null) {
+		        vo.getAttachList().forEach(attach -> log.info(attach));
+		    }
+
+		    log.info("register:========== " + vo);
+
+		    service.register(vo);
+
+		    rttr.addFlashAttribute("message", "등록되었습니다.");
+		    rttr.addFlashAttribute("result", vo.getRno());
+
+		    return "redirect:/review/list";
 		}
 		
 		//리뷰 수정
@@ -142,7 +148,7 @@ public class ReviewController {
 				//삭제처리
 				if(service.remove(rno) ==1) {
 					deleteFiles(attachList);
-					rttr.addFlashAttribute("result", "success");
+					rttr.addFlashAttribute("removeresult", "success");
 				}
 //			} else {
 //				rttr.addFlashAttribute("message", "삭제 권한이 없습니다.");
@@ -152,11 +158,22 @@ public class ReviewController {
 		
 		
 		@GetMapping({"/get", "/modify"})
-		public void get(Long rno, Criteria cri, Model model) {
-			log.info("/get");
-			
-			
-			model.addAttribute("review", service.get(rno));
+		public void get(Long rno, Criteria cri, Model model, Principal principal) {
+		    log.info("/get");
+
+		    // 리뷰 정보 가져오기
+		    ReviewVO review = service.get(rno);
+		    model.addAttribute("review", review);
+
+		    // 작성자 여부 확인
+		    boolean isWriter = false;
+		    if (principal != null) { // 로그인된 사용자라면
+		        String username = principal.getName(); // 로그인된 사용자 ID
+		        Long userId = userservice.getUnoByUsername(username); // 사용자 ID 가져오기
+		        isWriter = review.getUno().equals(userId); // 작성자인지 확인
+		    }
+
+		    model.addAttribute("isWriter", isWriter); // 작성자 여부 전달
 		}
 		
 		

@@ -17,6 +17,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mbc.domain.ReviewVO;
@@ -32,14 +33,13 @@ import lombok.extern.log4j.Log4j;
 public class ReviewControllerTests {
 
 	@Autowired
-	private ReviewService reviewService;
+	private WebApplicationContext ctx;
 	
 	private MockMvc mockMvc;
 	
 	@Before
-	public void setUp() {
-		// MockMvc 객체를 사용하여 ReviewController를 standalone 모드에서 테스트할 수 있도록 설정
-		mockMvc = MockMvcBuilders.standaloneSetup(new ReviewController(reviewService)).build();
+	public void setup() {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx).build();
 	}
 	
 	//리뷰 리스트 불러오기
@@ -64,7 +64,7 @@ public class ReviewControllerTests {
 	    vo.setUno(5L);
 	    vo.setR_content("레지스터 테스트!!");
 	    // 리뷰 등록 서비스 호출
-	    reviewService.register(vo);
+	    //reviewService.register(vo);
 	    
 	    // 생성된 게시물의 번호 출력
 	    log.info("생성된 게시물의 번호 : " + vo.getPno());

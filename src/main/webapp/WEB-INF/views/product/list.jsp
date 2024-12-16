@@ -38,12 +38,7 @@
     <div class="container py-5">
         <h2 class="py-3">상품 목록</h2>
         <div class="d-flex justify-content-end">
-         <sec:authorize access="isAuthenticated()">
         <a href="/product/register" class="btn btn-primary mb-3">상품등록</a>
-    </sec:authorize>
-    <sec:authorize access="!isAuthenticated()">
-        <a href="/login" class="btn btn-primary mb-3">상품등록</a>
-    </sec:authorize>
 		</div>
         <div class="container">
     <div class="row">
